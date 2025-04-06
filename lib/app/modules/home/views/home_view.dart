@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:quran/app/routes/app_pages.dart';
 
 import 'package:quran/app/constants/color.dart';
+import 'package:quran/app/data/models/juz.dart' as juz;
 import 'package:quran/app/data/models/surah_main.dart';
 import 'package:quran/app/modules/home/controllers/home_controller.dart';
 
@@ -179,50 +180,85 @@ class HomeView extends GetView<HomeController> {
                                 '${surah.name?.short}',
                               ),
                               onTap: () {
-                                Get.toNamed(Routes.DETAIL_SURAH,
-                                    arguments: surah);
+                                Get.toNamed(
+                                  Routes.DETAIL_SURAH,
+                                  arguments: surah,
+                                );
                               },
                             );
                           },
                         );
                       },
                     ),
-                    ListView.builder(
-                      itemCount: 30,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(
-                            'Juz ${index + 1}',
-                          ),
-                          leading: Obx(
-                            () {
-                              return Container(
-                                width: 35,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                      controller.isDarkMode.isTrue
-                                          ? 'assets/images/octagonal_dark.png'
-                                          : 'assets/images/octagonal_light.png',
+                    FutureBuilder<List<juz.Juz>>(
+                      future: controller.getAllJuz(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        }
+                        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          return Center(child: Text('No data available'));
+                        }
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            juz.Juz juzDetail = snapshot.data![index];
+                            return ListTile(
+                              onTap: () {
+                                Get.toNamed(
+                                  Routes.DETAIL_JUZ,
+                                  arguments: juzDetail,
+                                );
+                              },
+                              leading: Obx(() {
+                                return Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        controller.isDarkMode.isTrue
+                                            ? 'assets/images/octagonal_dark.png'
+                                            : 'assets/images/octagonal_light.png',
+                                      ),
+                                      fit: BoxFit.contain,
                                     ),
-                                    fit: BoxFit.contain,
                                   ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '${index + 1}',
+                                  child: Center(
+                                    child: Text(
+                                      '${index + 1}',
+                                    ),
+                                  ),
+                                );
+                              }),
+                              isThreeLine: true,
+                              title: Text(
+                                'Juz ${index + 1}',
+                              ),
+                              subtitle: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Start: ${juzDetail.juzStartInfo}',
                                     style: TextStyle(
-                                      color: controller.isDarkMode.isTrue
-                                          ? appWhite
-                                          : appPurpleDark,
+                                      color: Colors.grey[500],
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                          onTap: () {},
+                                  Text(
+                                    'End: ${juzDetail.juzEndInfo}',
+                                    style: TextStyle(
+                                      color: Colors.grey[500],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
