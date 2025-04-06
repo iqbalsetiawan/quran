@@ -1,16 +1,21 @@
-# hadith
+# Quran Project
 
-A new Flutter project.
+## About
+
+Hey there! This is my personal project for a Quran application. Just a little something I'm working on.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Want to check it out? Clone the repo with this command:
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+git clone https://github.com/iqbalsetiawan/quran.git
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## How to Use
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+I'll add some cool features here soon! Stay tuned.
+
+## Contributing
+
+If you want to help out, feel free to fork the repo and send a pull request. I'd love to see your ideas!
