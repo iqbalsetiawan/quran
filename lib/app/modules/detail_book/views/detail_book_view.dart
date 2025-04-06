@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:hadith/app/data/models/book_detail.dart';
-import 'package:hadith/app/data/models/book_main.dart';
+import 'package:quran/app/data/models/book_detail.dart';
+import 'package:quran/app/data/models/book_main.dart';
 
 import '../controllers/detail_book_controller.dart';
 

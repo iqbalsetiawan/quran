@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hadith/app/routes/app_pages.dart';
+import 'package:quran/app/routes/app_pages.dart';
 
-import 'package:hadith/app/constants/color.dart';
-import 'package:hadith/app/data/models/surah_main.dart';
-import 'package:hadith/app/modules/home/controllers/home_controller.dart';
+import 'package:quran/app/constants/color.dart';
+import 'package:quran/app/data/models/surah_main.dart';
+import 'package:quran/app/modules/home/controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);

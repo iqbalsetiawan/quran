@@ -1,4 +1,4 @@
-package com.hadith.hadith
+package com.quran.quran
 
 import io.flutter.embedding.android.FlutterActivity
 

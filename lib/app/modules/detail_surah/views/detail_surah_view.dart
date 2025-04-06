@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:hadith/app/data/models/surah_main.dart';
-import 'package:hadith/app/data/models/surah_detail.dart' as detail;
+import 'package:quran/app/data/models/surah_main.dart';
+import 'package:quran/app/data/models/surah_detail.dart' as detail;
 import '../controllers/detail_surah_controller.dart';
 
 class DetailSurahView extends GetView<DetailSurahController> {

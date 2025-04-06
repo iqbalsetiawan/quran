@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
-import 'package:hadith/app/constants/color.dart';
-import 'package:hadith/app/data/models/surah_main.dart';
+import 'package:quran/app/constants/color.dart';
+import 'package:quran/app/data/models/surah_main.dart';
 
 class HomeController extends GetxController {
   RxBool isDarkMode = false.obs;

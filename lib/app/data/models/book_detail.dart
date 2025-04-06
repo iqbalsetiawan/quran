@@ -1,4 +1,4 @@
-// API URL: https://api.hadith.gading.dev/books/muslim?range=1-150
+// API URL: https://api.quran.gading.dev/books/muslim?range=1-150
 //
 // To parse this JSON data, do
 //

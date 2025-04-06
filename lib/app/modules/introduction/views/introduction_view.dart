@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:hadith/app/constants/color.dart';
-import 'package:hadith/app/routes/app_pages.dart';
+import 'package:quran/app/constants/color.dart';
+import 'package:quran/app/routes/app_pages.dart';
 import 'package:lottie/lottie.dart';
 
 import '../controllers/introduction_controller.dart';

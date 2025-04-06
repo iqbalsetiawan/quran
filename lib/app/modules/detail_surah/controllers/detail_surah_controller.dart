@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:hadith/app/data/models/surah_detail.dart';
+import 'package:quran/app/data/models/surah_detail.dart';
 import 'package:http/http.dart' as http;
 
 class DetailSurahController extends GetxController {

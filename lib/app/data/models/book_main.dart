@@ -1,4 +1,4 @@
-// API URL: https://api.hadith.gading.dev/books
+// API URL: https://api.quran.gading.dev/books
 //
 // To parse this JSON data, do
 //
