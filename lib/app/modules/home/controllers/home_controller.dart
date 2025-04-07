@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:quran/app/constants/color.dart';
@@ -9,6 +10,7 @@ import 'package:quran/app/data/models/surah_main.dart';
 class HomeController extends GetxController {
   RxList<Surah> allSurah = <Surah>[].obs;
   RxBool isDarkMode = false.obs;
+  final box = GetStorage();
 
   Future<List<Surah>> getAllSurah() async {
     Uri url = Uri.parse('https://api.quran.gading.dev/surah');
@@ -40,5 +42,10 @@ class HomeController extends GetxController {
   void toggleDarkMode() {
     Get.changeTheme(Get.isDarkMode ? themeLight : themeDark);
     isDarkMode.toggle();
+    if (Get.isDarkMode) {
+      box.remove('themeDark');
+    } else {
+      box.write('themeDark', true);
+    }
   }
 }
