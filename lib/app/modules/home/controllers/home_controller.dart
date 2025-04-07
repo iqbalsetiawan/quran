@@ -7,6 +7,7 @@ import 'package:quran/app/data/models/juz.dart';
 import 'package:quran/app/data/models/surah_main.dart';
 
 class HomeController extends GetxController {
+  RxList<Surah> allSurah = <Surah>[].obs;
   RxBool isDarkMode = false.obs;
 
   Future<List<Surah>> getAllSurah() async {
@@ -16,7 +17,8 @@ class HomeController extends GetxController {
     if (data == null || data.isEmpty) {
       return [];
     } else {
-      return data.map((e) => Surah.fromJson(e)).toList();
+      allSurah.value = data.map((e) => Surah.fromJson(e)).toList();
+      return allSurah;
     }
   }
 

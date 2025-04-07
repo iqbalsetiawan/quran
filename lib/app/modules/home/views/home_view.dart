@@ -136,7 +136,10 @@ class HomeView extends GetView<HomeController> {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Center(
-                              child: Text('Error: ${snapshot.error}'));
+                            child: Text(
+                              'Error: ${snapshot.error}',
+                            ),
+                          );
                         }
                         if (!snapshot.hasData || snapshot.data!.isEmpty) {
                           return Center(child: Text('No data available'));
@@ -198,7 +201,10 @@ class HomeView extends GetView<HomeController> {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Center(
-                              child: Text('Error: ${snapshot.error}'));
+                            child: Text(
+                              'Error: ${snapshot.error}',
+                            ),
+                          );
                         }
                         if (!snapshot.hasData || snapshot.data!.isEmpty) {
                           return Center(child: Text('No data available'));
@@ -206,12 +212,36 @@ class HomeView extends GetView<HomeController> {
                         return ListView.builder(
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
-                            juz.Juz juzDetail = snapshot.data![index];
+                            juz.Juz detailJuz = snapshot.data![index];
+
+                            String nameStart = detailJuz.juzStartInfo!.split(' - ')[0];
+                            String nameEnd = detailJuz.juzEndInfo!.split(' - ')[0];
+
+                            List<Surah> rawAllSurahInJuz = [];
+                            List<Surah> allSurahInJuz = [];
+
+                            for (Surah item in controller.allSurah) {
+                              rawAllSurahInJuz.add(item);
+                              if (item.name!.transliteration!.id == nameEnd) {
+                                break;
+                              }
+                            }
+
+                            for (Surah item in rawAllSurahInJuz.reversed.toList()) {
+                              allSurahInJuz.add(item);
+                              if (item.name!.transliteration!.id == nameStart) {
+                                break;
+                              }
+                            }
+
                             return ListTile(
                               onTap: () {
                                 Get.toNamed(
                                   Routes.DETAIL_JUZ,
-                                  arguments: juzDetail,
+                                  arguments: [
+                                    detailJuz,
+                                    allSurahInJuz.reversed.toList(),
+                                  ],
                                 );
                               },
                               leading: Obx(() {
@@ -244,13 +274,13 @@ class HomeView extends GetView<HomeController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Start: ${juzDetail.juzStartInfo}',
+                                    'Start: ${detailJuz.juzStartInfo}',
                                     style: TextStyle(
                                       color: Colors.grey[500],
                                     ),
                                   ),
                                   Text(
-                                    'End: ${juzDetail.juzEndInfo}',
+                                    'End: ${detailJuz.juzEndInfo}',
                                     style: TextStyle(
                                       color: Colors.grey[500],
                                     ),

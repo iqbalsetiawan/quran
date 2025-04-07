@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:quran/app/constants/color.dart';
 import 'package:quran/app/data/models/surah_main.dart';
 import 'package:quran/app/data/models/surah_detail.dart' as detail;
-import '../controllers/detail_surah_controller.dart';
+import 'package:quran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
 
 class DetailSurahView extends GetView<DetailSurahController> {
   final Surah surah = Get.arguments;

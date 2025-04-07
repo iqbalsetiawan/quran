@@ -23,12 +23,12 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.HOME,
-      page: () => const HomeView(),
+      page: () => HomeView(),
       binding: HomeBinding(),
     ),
     GetPage(
       name: _Paths.INTRODUCTION,
-      page: () => const IntroductionView(),
+      page: () => IntroductionView(),
       binding: IntroductionBinding(),
     ),
     GetPage(
@@ -43,12 +43,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SEARCH,
-      page: () => const SearchView(),
+      page: () => SearchView(),
       binding: SearchBinding(),
     ),
     GetPage(
       name: _Paths.DETAIL_JUZ,
-      page: () => const DetailJuzView(),
+      page: () => DetailJuzView(),
       binding: DetailJuzBinding(),
     ),
   ];
