@@ -18,7 +18,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
       ),
       body: ListView(
         padding: EdgeInsets.all(20),
-        children: [ 
+        children: [
           GestureDetector(
             onTap: () {
               Get.dialog(
@@ -154,18 +154,48 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                   ),
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.bookmark_add_outlined),
-                                    onPressed: () {},
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.play_arrow),
-                                    onPressed: () {},
-                                  ),
-                                ],
-                              ),
+                              GetBuilder<DetailSurahController>(builder: (c) {
+                                return Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.bookmark_add_outlined),
+                                      onPressed: () {},
+                                    ),
+                                    (ayat.audioStatus == 'stop')
+                                        ? IconButton(
+                                            icon: Icon(Icons.play_arrow),
+                                            onPressed: () {
+                                              c.playAudio(ayat);
+                                            },
+                                          )
+                                        : Row(
+                                            children: [
+                                              (ayat.audioStatus == 'play')
+                                                  ? IconButton(
+                                                      icon: Icon(Icons.pause),
+                                                      onPressed: () {
+                                                        c.pauseAudio(ayat);
+                                                      },
+                                                    )
+                                                  : IconButton(
+                                                      icon: Icon(
+                                                        Icons.play_arrow,
+                                                      ),
+                                                      onPressed: () {
+                                                        c.resumeAudio(ayat);
+                                                      },
+                                                    ),
+                                              IconButton(
+                                                icon: Icon(Icons.stop),
+                                                onPressed: () {
+                                                  c.stopAudio(ayat);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                  ],
+                                );
+                              })
                             ],
                           ),
                         ),
