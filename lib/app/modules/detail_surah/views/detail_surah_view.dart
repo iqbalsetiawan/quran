@@ -159,7 +159,28 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                   children: [
                                     IconButton(
                                       icon: Icon(Icons.bookmark_add_outlined),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Get.defaultDialog(
+                                          title: 'Bookmark',
+                                          middleText: 'Select Bookmark Type',
+                                          actions: [
+                                            ElevatedButton(
+                                              onPressed: () => c.addBookmark(true, snapshot.data!, ayat, index),
+                                              child: Text('Last Read'),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: appPurple,
+                                              ),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () => c.addBookmark(false, snapshot.data!, ayat, index),
+                                              child: Text('Bookmark'),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: appPurple,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     ),
                                     (ayat.audioStatus == 'stop')
                                         ? IconButton(

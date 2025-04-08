@@ -3,13 +3,18 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:quran/app/constants/color.dart';
+import 'package:quran/app/data/db/bookmark.dart';
 import 'package:quran/app/data/models/surah_detail.dart';
 import 'package:http/http.dart' as http;
+import 'package:sqflite/sqlite_api.dart';
 
 class DetailSurahController extends GetxController {
   final player = AudioPlayer();
 
   Verse? lastVerse;
+
+  DatabaseManager database = DatabaseManager.instance;
 
   @override
   void onClose() {
@@ -134,6 +139,46 @@ class DetailSurahController extends GetxController {
     } catch (e) {
       print('An error occured: $e');
       Get.snackbar('Error', 'An error occured: $e');
+    }
+  }
+
+  void addBookmark(
+      bool lastRead, SurahDetail surah, Verse verse, int indexAyat) async {
+    Database db = await database.db;
+    bool flagExist = false;
+
+    if (lastRead) {
+      await db.delete('bookmark', where: 'last_read = 1');
+    } else {
+      List duplicate = await db.query('bookmark',
+          where:
+              "surah = ? and ayat = ? and juz = ? and via = ? and index_ayat = ? and last_read = 0",
+          whereArgs: [
+            surah.name?.transliteration?.id,
+            verse.number?.inSurah,
+            verse.meta?.juz,
+            'surah',
+            indexAyat
+          ]);
+      if (duplicate.isNotEmpty) {
+        flagExist = true;
+      }
+    }
+
+    if (!flagExist) {
+      await db.insert('bookmark', {
+        'surah': surah.name?.transliteration?.id,
+        'ayat': verse.number?.inSurah,
+        'juz': verse.meta?.juz,
+        'via': 'surah',
+        'index_ayat': indexAyat,
+        'last_read': lastRead ? 1 : 0,
+      });
+      Get.back();
+      Get.snackbar('Success', 'Bookmark added', colorText: appWhite);
+    } else {
+      Get.back();
+      Get.snackbar('Error', 'Bookmark already exists', colorText: appWhite);
     }
   }
 }

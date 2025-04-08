@@ -122,7 +122,7 @@ class HomeView extends GetView<HomeController> {
                 tabs: [
                   Tab(text: 'Surah'),
                   Tab(text: 'Juz'),
-                  Tab(text: 'Tafsir'),
+                  Tab(text: 'Bookmark'),
                 ],
               ),
               Expanded(
@@ -214,8 +214,10 @@ class HomeView extends GetView<HomeController> {
                           itemBuilder: (context, index) {
                             juz.Juz detailJuz = snapshot.data![index];
 
-                            String nameStart = detailJuz.juzStartInfo!.split(' - ')[0];
-                            String nameEnd = detailJuz.juzEndInfo!.split(' - ')[0];
+                            String nameStart =
+                                detailJuz.juzStartInfo!.split(' - ')[0];
+                            String nameEnd =
+                                detailJuz.juzEndInfo!.split(' - ')[0];
 
                             List<Surah> rawAllSurahInJuz = [];
                             List<Surah> allSurahInJuz = [];
@@ -227,7 +229,8 @@ class HomeView extends GetView<HomeController> {
                               }
                             }
 
-                            for (Surah item in rawAllSurahInJuz.reversed.toList()) {
+                            for (Surah item
+                                in rawAllSurahInJuz.reversed.toList()) {
                               allSurahInJuz.add(item);
                               if (item.name!.transliteration!.id == nameStart) {
                                 break;
@@ -292,7 +295,44 @@ class HomeView extends GetView<HomeController> {
                         );
                       },
                     ),
-                    Center(child: Text('Tafsir')),
+                    GetBuilder<HomeController>(
+                      builder: (c) {
+                        return FutureBuilder<List<Map<String, dynamic>>>(
+                          future: c.getAllBookmark(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text(
+                                  'Error: ${snapshot.error}',
+                                ),
+                              );
+                            }
+                            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              return Center(child: Text('No data available'));
+                            }
+                            return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                Map<String, dynamic> bookmark =
+                                    snapshot.data![index];
+                                return ListTile(
+                                  leading: CircleAvatar(
+                                    child: Text('${index + 1}'),
+                                  ),
+                                  title: Text(bookmark['surah']),
+                                  subtitle: Text(
+                                    'Verses: ${bookmark['ayat']} - Via ${bookmark['via']}',
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ],
                 ),
               )
