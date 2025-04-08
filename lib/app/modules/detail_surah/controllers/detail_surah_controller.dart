@@ -157,7 +157,7 @@ class DetailSurahController extends GetxController {
             surah.name?.transliteration?.id,
             verse.number?.inSurah,
             verse.meta?.juz,
-            'surah',
+            'Surah',
             indexAyat
           ]);
       if (duplicate.isNotEmpty) {
@@ -170,7 +170,7 @@ class DetailSurahController extends GetxController {
         'surah': surah.name?.transliteration?.id,
         'ayat': verse.number?.inSurah,
         'juz': verse.meta?.juz,
-        'via': 'surah',
+        'via': 'Surah',
         'index_ayat': indexAyat,
         'last_read': lastRead ? 1 : 0,
       });

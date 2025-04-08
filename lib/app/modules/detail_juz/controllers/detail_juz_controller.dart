@@ -1,10 +1,15 @@
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:quran/app/constants/color.dart';
+import 'package:quran/app/data/db/bookmark.dart';
 import 'package:quran/app/data/models/juz.dart';
+import 'package:quran/app/data/models/surah_main.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class DetailJuzController extends GetxController {
   final player = AudioPlayer();
+  DatabaseManager database = DatabaseManager.instance;
   Verses? lastVerse;
 
   @override
@@ -122,6 +127,54 @@ class DetailJuzController extends GetxController {
     } catch (e) {
       print('An error occured: $e');
       Get.snackbar('Error', 'An error occured: $e');
+    }
+  }
+
+  void addBookmark(
+      bool lastRead, Surah surah, Verses verse, int indexAyat) async {
+    Database db = await database.db;
+    bool flagExist = false;
+
+    if (lastRead) {
+      await db.delete('bookmark', where: 'last_read = 1');
+    } else {
+      List duplicate = await db.query('bookmark',
+          where:
+              "surah = ? and ayat = ? and juz = ? and via = ? and index_ayat = ? and last_read = 0",
+          whereArgs: [
+            surah.name?.transliteration?.id,
+            verse.number?.inSurah,
+            verse.meta?.juz,
+            'Juz',
+            indexAyat
+          ]);
+      if (duplicate.isNotEmpty) {
+        flagExist = true;
+      }
+    }
+
+    if (!flagExist) {
+      await db.insert('bookmark', {
+        'surah': surah.name?.transliteration?.id,
+        'ayat': verse.number?.inSurah,
+        'juz': verse.meta?.juz,
+        'via': 'Juz',
+        'index_ayat': indexAyat,
+        'last_read': lastRead ? 1 : 0,
+      });
+      Get.back();
+      Get.snackbar(
+        'Success',
+        'Bookmark added',
+        colorText: appWhite,
+      );
+    } else {
+      Get.back();
+      Get.snackbar(
+        'Error',
+        'Bookmark already exists',
+        colorText: appWhite,
+      );
     }
   }
 }

@@ -175,7 +175,36 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                   children: [
                                     IconButton(
                                       icon: Icon(Icons.bookmark_add_outlined),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Get.defaultDialog(
+                                          title: 'Bookmark',
+                                          middleText: 'Select Bookmark Type',
+                                          actions: [
+                                            ElevatedButton(
+                                              onPressed: () => c.addBookmark(
+                                                  true,
+                                                  allSurahInJuz[surahIndex],
+                                                  ayat,
+                                                  index),
+                                              child: Text('Last Read'),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: appPurple,
+                                              ),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () => c.addBookmark(
+                                                  false,
+                                                  allSurahInJuz[surahIndex],
+                                                  ayat,
+                                                  index),
+                                              child: Text('Bookmark'),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: appPurple,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     ),
                                     (ayat.audioStatus == 'stop')
                                         ? IconButton(
