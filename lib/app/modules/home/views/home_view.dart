@@ -291,7 +291,10 @@ class HomeView extends GetView<HomeController> {
                               onTap: () {
                                 Get.toNamed(
                                   Routes.DETAIL_SURAH,
-                                  arguments: surah,
+                                  arguments: {
+                                    "name": surah.name?.transliteration?.id,
+                                    "number": surah.number,
+                                  },
                                 );
                               },
                             );
@@ -425,6 +428,16 @@ class HomeView extends GetView<HomeController> {
                                 Map<String, dynamic> bookmark =
                                     snapshot.data![index];
                                 return ListTile(
+                                  onTap: () {
+                                    Get.toNamed(
+                                      Routes.DETAIL_SURAH,
+                                      arguments: {
+                                        "name": bookmark['surah'].toString(),
+                                        "number": bookmark['number_surah'],
+                                        "bookmark": bookmark,
+                                      },
+                                    );
+                                  },
                                   leading: Obx(() {
                                     return Container(
                                       width: 35,

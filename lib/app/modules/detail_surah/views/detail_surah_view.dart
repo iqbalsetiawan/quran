@@ -2,117 +2,121 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:quran/app/constants/color.dart';
-import 'package:quran/app/data/models/surah_main.dart';
 import 'package:quran/app/data/models/surah_detail.dart' as detail;
 import 'package:quran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
 import 'package:quran/app/modules/home/controllers/home_controller.dart';
 
+// ignore: must_be_immutable
 class DetailSurahView extends GetView<DetailSurahController> {
-  final Surah surah = Get.arguments;
   final homeController = Get.find<HomeController>();
+  Map<String, dynamic>? bookmark;
 
   @override
   Widget build(BuildContext context) {
+    if (Get.arguments['bookmark'] != null) {
+      bookmark = Get.arguments['bookmark'];
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text('${surah.name?.transliteration?.id}'),
+        title: Text('${Get.arguments['name']}'),
         centerTitle: true,
       ),
-      body: ListView(
-        padding: EdgeInsets.all(20),
-        children: [
-          GestureDetector(
-            onTap: () {
-              Get.dialog(
-                Dialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.all(25),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Get.isDarkMode
-                          ? appPurpleLight2.withOpacity(0.3)
-                          : appWhite,
+      body: FutureBuilder<detail.SurahDetail>(
+        future: controller.getDetailSurah(Get.arguments['number'].toString()),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData) {
+            return Center(child: Text('No data found'));
+          }
+
+          detail.SurahDetail surah = snapshot.data!;
+
+          return ListView(
+            padding: EdgeInsets.all(20),
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Get.dialog(
+                    Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.all(25),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Get.isDarkMode
+                              ? appPurpleLight2.withOpacity(0.3)
+                              : appWhite,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Tafsir',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              '${surah.tafsir?.id}',
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      colors: [
+                        appPurpleLight1,
+                        appPurpleDark,
+                      ],
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'Tafsir',
+                          '${surah.name?.transliteration?.id?.toUpperCase()}',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            color: appWhite,
                           ),
                         ),
-                        SizedBox(height: 20),
                         Text(
-                          '${surah.tafsir?.id}',
-                          textAlign: TextAlign.justify,
+                          '(${surah.name?.translation?.id?.toUpperCase()})',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: appWhite,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          '${surah.numberOfVerses} Verses | ${surah.revelation?.id}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: appWhite,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-              );
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  colors: [
-                    appPurpleLight1,
-                    appPurpleDark,
-                  ],
-                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Text(
-                      '${surah.name?.transliteration?.id?.toUpperCase()}',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: appWhite,
-                      ),
-                    ),
-                    Text(
-                      '(${surah.name?.translation?.id?.toUpperCase()})',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: appWhite,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      '${surah.numberOfVerses} Verses | ${surah.revelation?.id}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: appWhite,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          FutureBuilder<detail.SurahDetail>(
-            future: controller.getDetailSurah(surah.number.toString()),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              }
-              if (!snapshot.hasData || snapshot.data == null) {
-                return Center(child: Text('No data available'));
-              }
-              return ListView.builder(
+              SizedBox(height: 20),
+              ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: snapshot.data!.verses!.length,
@@ -263,10 +267,10 @@ class DetailSurahView extends GetView<DetailSurahController> {
                     ],
                   );
                 },
-              );
-            },
-          ),
-        ],
+              )
+            ],
+          );
+        },
       ),
     );
   }

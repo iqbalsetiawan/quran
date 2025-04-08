@@ -140,9 +140,10 @@ class DetailJuzController extends GetxController {
     } else {
       List duplicate = await db.query('bookmark',
           where:
-              "surah = ? and ayat = ? and juz = ? and via = ? and index_ayat = ? and last_read = 0",
+              "surah = ? and number_surah = ? and ayat = ? and juz = ? and via = ? and index_ayat = ? and last_read = 0",
           whereArgs: [
             surah.name?.transliteration?.id,
+            surah.number,
             verse.number?.inSurah,
             verse.meta?.juz,
             'Juz',
@@ -156,6 +157,7 @@ class DetailJuzController extends GetxController {
     if (!flagExist) {
       await db.insert('bookmark', {
         'surah': surah.name?.transliteration?.id,
+        'number_surah': surah.number,
         'ayat': verse.number?.inSurah,
         'juz': verse.meta?.juz,
         'via': 'Juz',
