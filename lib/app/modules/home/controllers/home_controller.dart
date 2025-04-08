@@ -45,8 +45,11 @@ class HomeController extends GetxController {
 
   Future<List<Map<String, dynamic>>> getAllBookmark() async {
     Database db = await database.db;
-    List<Map<String, dynamic>> allBookmark =
-        await db.query('bookmark', where: "last_read = 0");
+    List<Map<String, dynamic>> allBookmark = await db.query(
+      'bookmark',
+      where: "last_read = 0",
+      orderBy: "number_surah, ayat",
+    );
     return allBookmark;
   }
 
@@ -57,7 +60,9 @@ class HomeController extends GetxController {
     Get.back();
     Get.snackbar(
       'Success',
-      isLastRead ? 'Last read deleted successfully' : 'Bookmark deleted successfully',
+      isLastRead
+          ? 'Last read deleted successfully'
+          : 'Bookmark deleted successfully',
       colorText: appWhite,
     );
   }

@@ -7,9 +7,11 @@ import 'package:quran/app/constants/color.dart';
 import 'package:quran/app/data/db/bookmark.dart';
 import 'package:quran/app/data/models/surah_detail.dart';
 import 'package:http/http.dart' as http;
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class DetailSurahController extends GetxController {
+  AutoScrollController scrollController = AutoScrollController();
   final player = AudioPlayer();
 
   Verse? lastVerse;
