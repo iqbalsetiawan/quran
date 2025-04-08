@@ -50,15 +50,26 @@ class HomeController extends GetxController {
     return allBookmark;
   }
 
-  void deleteBookmark(int id) async {
+  void deleteBookmark(int id, bool isLastRead) async {
     Database db = await database.db;
     await db.delete('bookmark', where: 'id = ?', whereArgs: [id]);
     update();
+    Get.back();
     Get.snackbar(
       'Success',
-      'Bookmark deleted successfully',
+      isLastRead ? 'Last read deleted successfully' : 'Bookmark deleted successfully',
       colorText: appWhite,
     );
+  }
+
+  Future<Map<String, dynamic>?> getLastRead() async {
+    Database db = await database.db;
+    List<Map<String, dynamic>> lastRead =
+        await db.query('bookmark', where: "last_read = 1");
+    if (lastRead.isEmpty) {
+      return null;
+    }
+    return lastRead.first;
   }
 
   void toggleDarkMode() {

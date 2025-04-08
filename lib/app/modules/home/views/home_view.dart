@@ -42,82 +42,188 @@ class HomeView extends GetView<HomeController> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(
-                    colors: [
-                      appPurpleLight1,
-                      appPurpleDark,
-                    ],
-                  ),
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(20),
-                  child: InkWell(
-                    onTap: () {},
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            bottom: -50,
-                            right: 0,
-                            child: Opacity(
-                              opacity: 0.7,
-                              child: Container(
-                                height: 200,
-                                width: 200,
-                                child: Image.asset(
-                                  'assets/images/logo.png',
-                                  fit: BoxFit.contain,
+              GetBuilder<HomeController>(builder: (c) {
+                return FutureBuilder<Map<String, dynamic>?>(
+                  future: c.getLastRead(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            colors: [
+                              appPurpleLight1,
+                              appPurpleDark,
+                            ],
+                          ),
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              bottom: -50,
+                              right: 0,
+                              child: Opacity(
+                                opacity: 0.7,
+                                child: Container(
+                                  height: 200,
+                                  width: 200,
+                                  child: Image.asset(
+                                    'assets/images/logo.png',
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.menu_book_rounded,
+                                          color: appWhite),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        'Last Read',
+                                        style: TextStyle(
+                                          color: appWhite,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 30),
+                                  Text(
+                                    'Loading...',
+                                    style: TextStyle(
+                                      color: appWhite,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  Text(
+                                    '',
+                                    style: TextStyle(
+                                      color: appWhite,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
+                    Map<String, dynamic>? lastRead = snapshot.data;
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                          colors: [
+                            appPurpleLight1,
+                            appPurpleDark,
+                          ],
+                        ),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                        child: InkWell(
+                          onLongPress: () {
+                            if (lastRead != null) {
+                              Get.defaultDialog(
+                                title: 'Delete Last Read',
+                                middleText:
+                                    'Are you sure you want to delete this last read?',
+                                actions: [
+                                  OutlinedButton(
+                                    onPressed: () => Get.back(),
+                                    child: Text('Cancel'),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () => c.deleteBookmark(
+                                      lastRead['id'],
+                                      true,
+                                    ),
+                                    child: Text('Delete'),
+                                  ),
+                                ],
+                              );
+                            }
+                          },
+                          onTap: () {
+                            if (lastRead != null) {}
+                          },
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            child: Stack(
                               children: [
-                                Row(
-                                  children: [
-                                    Icon(Icons.menu_book_rounded,
-                                        color: appWhite),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      'Last Read',
-                                      style: TextStyle(
-                                        color: appWhite,
+                                Positioned(
+                                  bottom: -50,
+                                  right: 0,
+                                  child: Opacity(
+                                    opacity: 0.7,
+                                    child: Container(
+                                      height: 200,
+                                      width: 200,
+                                      child: Image.asset(
+                                        'assets/images/logo.png',
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                SizedBox(height: 20),
-                                Text(
-                                  'Al-Fatihah',
-                                  style: TextStyle(
-                                    color: appWhite,
-                                    fontSize: 20,
                                   ),
                                 ),
-                                Text(
-                                  'Verses: 7',
-                                  style: TextStyle(
-                                    color: appWhite,
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(Icons.menu_book_rounded,
+                                              color: appWhite),
+                                          SizedBox(width: 10),
+                                          Text(
+                                            'Last Read',
+                                            style: TextStyle(
+                                              color: appWhite,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 30),
+                                      Text(
+                                        lastRead == null
+                                            ? 'No last read'
+                                            : "${lastRead['surah']}",
+                                        style: TextStyle(
+                                          color: appWhite,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      Text(
+                                        lastRead == null
+                                            ? ''
+                                            : 'Juz: ${lastRead['juz']} | Verses: ${lastRead['ayat']}',
+                                        style: TextStyle(
+                                          color: appWhite,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
+                    );
+                  },
+                );
+              }),
               TabBar(
                 tabs: [
                   Tab(text: 'Surah'),
@@ -349,7 +455,10 @@ class HomeView extends GetView<HomeController> {
                                   ),
                                   trailing: IconButton(
                                     onPressed: () {
-                                      controller.deleteBookmark(bookmark['id']);
+                                      controller.deleteBookmark(
+                                        bookmark['id'],
+                                        false,
+                                      );
                                     },
                                     icon: Icon(Icons.delete),
                                   ),

@@ -5,9 +5,11 @@ import 'package:quran/app/constants/color.dart';
 import 'package:quran/app/data/models/surah_main.dart';
 import 'package:quran/app/data/models/surah_detail.dart' as detail;
 import 'package:quran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
+import 'package:quran/app/modules/home/controllers/home_controller.dart';
 
 class DetailSurahView extends GetView<DetailSurahController> {
   final Surah surah = Get.arguments;
+  final homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -165,14 +167,29 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                           middleText: 'Select Bookmark Type',
                                           actions: [
                                             ElevatedButton(
-                                              onPressed: () => c.addBookmark(true, snapshot.data!, ayat, index),
+                                              onPressed: () async {
+                                                await c.addBookmark(
+                                                  true,
+                                                  snapshot.data!,
+                                                  ayat,
+                                                  index,
+                                                );
+                                                homeController.update();
+                                              },
                                               child: Text('Last Read'),
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: appPurple,
                                               ),
                                             ),
                                             ElevatedButton(
-                                              onPressed: () => c.addBookmark(false, snapshot.data!, ayat, index),
+                                              onPressed: () {
+                                                c.addBookmark(
+                                                  false,
+                                                  snapshot.data!,
+                                                  ayat,
+                                                  index,
+                                                );
+                                              },
                                               child: Text('Bookmark'),
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: appPurple,

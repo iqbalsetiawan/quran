@@ -5,10 +5,12 @@ import 'package:quran/app/constants/color.dart';
 import 'package:quran/app/data/models/juz.dart' as juz;
 import 'package:quran/app/data/models/surah_main.dart';
 import 'package:quran/app/modules/detail_juz/controllers/detail_juz_controller.dart';
+import 'package:quran/app/modules/home/controllers/home_controller.dart';
 
 class DetailJuzView extends GetView<DetailJuzController> {
   final juz.Juz detailJuz = Get.arguments[0];
   final List<Surah> allSurahInJuz = Get.arguments[1];
+  final homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -181,22 +183,29 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                           middleText: 'Select Bookmark Type',
                                           actions: [
                                             ElevatedButton(
-                                              onPressed: () => c.addBookmark(
+                                              onPressed: () async {
+                                                await c.addBookmark(
                                                   true,
                                                   allSurahInJuz[surahIndex],
                                                   ayat,
-                                                  index),
+                                                  index,
+                                                );
+                                                homeController.update();
+                                              },
                                               child: Text('Last Read'),
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: appPurple,
                                               ),
                                             ),
                                             ElevatedButton(
-                                              onPressed: () => c.addBookmark(
+                                              onPressed: () {
+                                                c.addBookmark(
                                                   false,
                                                   allSurahInJuz[surahIndex],
                                                   ayat,
-                                                  index),
+                                                  index,
+                                                );
+                                              },
                                               child: Text('Bookmark'),
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: appPurple,

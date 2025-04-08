@@ -130,7 +130,7 @@ class DetailJuzController extends GetxController {
     }
   }
 
-  void addBookmark(
+  Future<void> addBookmark(
       bool lastRead, Surah surah, Verses verse, int indexAyat) async {
     Database db = await database.db;
     bool flagExist = false;
@@ -165,7 +165,7 @@ class DetailJuzController extends GetxController {
       Get.back();
       Get.snackbar(
         'Success',
-        'Bookmark added',
+        lastRead ? 'Last read added' : 'Bookmark added',
         colorText: appWhite,
       );
     } else {
