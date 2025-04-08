@@ -319,12 +319,39 @@ class HomeView extends GetView<HomeController> {
                                 Map<String, dynamic> bookmark =
                                     snapshot.data![index];
                                 return ListTile(
-                                  leading: CircleAvatar(
-                                    child: Text('${index + 1}'),
-                                  ),
+                                  leading: Obx(() {
+                                    return Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                            controller.isDarkMode.isTrue
+                                                ? 'assets/images/octagonal_dark.png'
+                                                : 'assets/images/octagonal_light.png',
+                                          ),
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '${index + 1}',
+                                        ),
+                                      ),
+                                    );
+                                  }),
                                   title: Text(bookmark['surah']),
                                   subtitle: Text(
                                     'Verses: ${bookmark['ayat']} - Via ${bookmark['via']}',
+                                    style: TextStyle(
+                                      color: Colors.grey[500],
+                                    ),
+                                  ),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      controller.deleteBookmark(bookmark['id']);
+                                    },
+                                    icon: Icon(Icons.delete),
                                   ),
                                 );
                               },

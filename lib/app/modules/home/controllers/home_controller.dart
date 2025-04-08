@@ -50,6 +50,17 @@ class HomeController extends GetxController {
     return allBookmark;
   }
 
+  void deleteBookmark(int id) async {
+    Database db = await database.db;
+    await db.delete('bookmark', where: 'id = ?', whereArgs: [id]);
+    update();
+    Get.snackbar(
+      'Success',
+      'Bookmark deleted successfully',
+      colorText: appWhite,
+    );
+  }
+
   void toggleDarkMode() {
     Get.changeTheme(Get.isDarkMode ? themeLight : themeDark);
     isDarkMode.toggle();

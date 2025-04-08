@@ -175,10 +175,18 @@ class DetailSurahController extends GetxController {
         'last_read': lastRead ? 1 : 0,
       });
       Get.back();
-      Get.snackbar('Success', 'Bookmark added', colorText: appWhite);
+      Get.snackbar(
+        'Success',
+        'Bookmark added',
+        colorText: appWhite,
+      );
     } else {
       Get.back();
-      Get.snackbar('Error', 'Bookmark already exists', colorText: appWhite);
+      Get.snackbar(
+        'Error',
+        'Bookmark already exists',
+        colorText: appWhite,
+      );
     }
   }
 }
