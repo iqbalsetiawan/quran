@@ -109,13 +109,14 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                             ),
                                           ),
                                           ElevatedButton(
-                                            onPressed: () {
-                                              c.addBookmark(
+                                            onPressed: () async {
+                                              await c.addBookmark(
                                                 false,
                                                 snapshot.data!,
                                                 ayat,
                                                 index,
                                               );
+                                              homeController.update();
                                             },
                                             child: Text('Markah'),
                                             style: ElevatedButton.styleFrom(
