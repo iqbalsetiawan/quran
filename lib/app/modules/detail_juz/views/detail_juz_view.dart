@@ -179,39 +179,11 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                       icon: Icon(Icons.bookmark_add_outlined),
                                       onPressed: () {
                                         Get.defaultDialog(
-                                          title: 'Bookmark',
-                                          middleText: 'Select Bookmark Type',
-                                          actions: [
-                                            ElevatedButton(
-                                              onPressed: () async {
-                                                await c.addBookmark(
-                                                  true,
-                                                  allSurahInJuz[surahIndex],
-                                                  ayat,
-                                                  index,
-                                                );
-                                                homeController.update();
-                                              },
-                                              child: Text('Last Read'),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: appPurple,
-                                              ),
-                                            ),
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                c.addBookmark(
-                                                  false,
-                                                  allSurahInJuz[surahIndex],
-                                                  ayat,
-                                                  index,
-                                                );
-                                              },
-                                              child: Text('Bookmark'),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: appPurple,
-                                              ),
-                                            ),
-                                          ],
+                                          titlePadding: EdgeInsets.only(
+                                              top: 20, bottom: 10),
+                                          title: 'Segera Hadir',
+                                          middleText:
+                                              'Fitur ini akan segera hadir!',
                                         );
                                       },
                                     ),
