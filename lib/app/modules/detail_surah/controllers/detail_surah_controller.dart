@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:quran/app/components/snackbar.dart';
 import 'package:quran/app/data/db/bookmark.dart';
-import 'package:quran/app/data/models/surah_detail.dart';
+import 'package:quran/app/data/models/detail_surah.dart';
 import 'package:http/http.dart' as http;
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -32,12 +32,12 @@ class DetailSurahController extends GetxController {
     player.playbackEventStream.listen((event) {}, onError: _handleError);
   }
 
-  Future<SurahDetail> getDetailSurah(String id) async {
+  Future<DetailSurah> getDetailSurah(String id) async {
     Uri url = Uri.parse('https://api.quran.gading.dev/surah/$id');
     var response = await http.get(url);
     Map<String, dynamic> data =
         (json.decode(response.body) as Map<String, dynamic>)['data'];
-    return SurahDetail.fromJson(data);
+    return DetailSurah.fromJson(data);
   }
 
   void playAudio(Verse verse) async {
@@ -94,7 +94,7 @@ class DetailSurahController extends GetxController {
   }
 
   Future<void> addBookmark(
-      bool lastRead, SurahDetail surah, Verse verse, int indexAyat) async {
+      bool lastRead, DetailSurah surah, Verse verse, int indexAyat) async {
     Database db = await database.db;
     bool flagExist = false;
 

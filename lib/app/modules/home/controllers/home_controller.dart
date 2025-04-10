@@ -7,7 +7,7 @@ import 'package:quran/app/components/snackbar.dart';
 import 'package:quran/app/constants/color.dart';
 import 'package:quran/app/data/db/bookmark.dart';
 import 'package:quran/app/data/models/juz.dart';
-import 'package:quran/app/data/models/surah_main.dart';
+import 'package:quran/app/data/models/surah.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class HomeController extends GetxController {

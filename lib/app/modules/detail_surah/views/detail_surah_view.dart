@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:quran/app/constants/color.dart';
-import 'package:quran/app/data/models/surah_detail.dart' as detail;
+import 'package:quran/app/data/models/detail_surah.dart' as detail;
 import 'package:quran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
 import 'package:quran/app/modules/home/controllers/home_controller.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -19,7 +19,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
         title: Text('${Get.arguments['name'].toString().toUpperCase()}'),
         centerTitle: true,
       ),
-      body: FutureBuilder<detail.SurahDetail>(
+      body: FutureBuilder<detail.DetailSurah>(
         future: controller.getDetailSurah(Get.arguments['number'].toString()),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -37,7 +37,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
             );
           }
 
-          detail.SurahDetail surah = snapshot.data!;
+          detail.DetailSurah surah = snapshot.data!;
 
           List<Widget> allAyat = List.generate(
             snapshot.data!.verses!.length,

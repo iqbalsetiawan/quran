@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:quran/app/constants/color.dart';
 
 import 'package:quran/app/data/models/juz.dart' as juz;
-import 'package:quran/app/data/models/surah_main.dart';
+import 'package:quran/app/data/models/surah.dart';
 import 'package:quran/app/modules/detail_juz/controllers/detail_juz_controller.dart';
 import 'package:quran/app/modules/home/controllers/home_controller.dart';
 

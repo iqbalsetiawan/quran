@@ -4,7 +4,7 @@ import 'package:quran/app/routes/app_pages.dart';
 
 import 'package:quran/app/constants/color.dart';
 import 'package:quran/app/data/models/juz.dart' as juz;
-import 'package:quran/app/data/models/surah_main.dart';
+import 'package:quran/app/data/models/surah.dart';
 import 'package:quran/app/modules/home/controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -19,14 +19,6 @@ class HomeView extends GetView<HomeController> {
       appBar: AppBar(
         title: Text('Aplikasi Quran & Hadith'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Get.toNamed(Routes.SEARCH);
-            },
-            icon: Icon(Icons.search),
-          ),
-        ],
       ),
       body: DefaultTabController(
         length: 3,

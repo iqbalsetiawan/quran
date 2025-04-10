@@ -2,26 +2,26 @@
 //
 // To parse this JSON data, do
 //
-//     final surahDetail = surahDetailFromJson(jsonString);
+//     final detailSurah = detailSurahFromJson(jsonString);
 
 import 'dart:convert';
 
-SurahDetail surahDetailFromJson(String str) =>
-    SurahDetail.fromJson(json.decode(str));
+DetailSurah detailSurahFromJson(String str) =>
+    DetailSurah.fromJson(json.decode(str));
 
-String surahDetailToJson(SurahDetail data) => json.encode(data.toJson());
+String detailSurahToJson(DetailSurah data) => json.encode(data.toJson());
 
-class SurahDetail {
+class DetailSurah {
   int? number;
   int? sequence;
   int? numberOfVerses;
   Name? name;
   Revelation? revelation;
-  SurahDetailTafsir? tafsir;
+  DetailSurahTafsir? tafsir;
   dynamic preBismillah;
   List<Verse>? verses;
 
-  SurahDetail({
+  DetailSurah({
     this.number,
     this.sequence,
     this.numberOfVerses,
@@ -32,7 +32,7 @@ class SurahDetail {
     this.verses,
   });
 
-  factory SurahDetail.fromJson(Map<String, dynamic> json) => SurahDetail(
+  factory DetailSurah.fromJson(Map<String, dynamic> json) => DetailSurah(
         number: json["number"],
         sequence: json["sequence"],
         numberOfVerses: json["numberOfVerses"],
@@ -42,7 +42,7 @@ class SurahDetail {
             : Revelation.fromJson(json["revelation"]),
         tafsir: json["tafsir"] == null
             ? null
-            : SurahDetailTafsir.fromJson(json["tafsir"]),
+            : DetailSurahTafsir.fromJson(json["tafsir"]),
         preBismillah: json["preBismillah"],
         verses: json["verses"] == null
             ? []
@@ -139,15 +139,15 @@ class Revelation {
       };
 }
 
-class SurahDetailTafsir {
+class DetailSurahTafsir {
   String? id;
 
-  SurahDetailTafsir({
+  DetailSurahTafsir({
     this.id,
   });
 
-  factory SurahDetailTafsir.fromJson(Map<String, dynamic> json) =>
-      SurahDetailTafsir(
+  factory DetailSurahTafsir.fromJson(Map<String, dynamic> json) =>
+      DetailSurahTafsir(
         id: json["id"],
       );
 
