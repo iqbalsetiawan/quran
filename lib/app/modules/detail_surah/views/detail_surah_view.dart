@@ -16,7 +16,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${Get.arguments['name']}'),
+        title: Text('${Get.arguments['name'].toString().toUpperCase()}'),
         centerTitle: true,
       ),
       body: FutureBuilder<detail.SurahDetail>(
@@ -26,7 +26,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
             return Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData) {
-            return Center(child: Text('No data found'));
+            return Center(child: Text('Tidak ada data'));
           }
 
           if (Get.arguments['bookmark'] != null) {
@@ -90,8 +90,8 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                     icon: Icon(Icons.bookmark_add_outlined),
                                     onPressed: () {
                                       Get.defaultDialog(
-                                        title: 'Bookmark',
-                                        middleText: 'Select Bookmark Type',
+                                        title: 'Markah',
+                                        middleText: 'Pilih Tipe Markah',
                                         actions: [
                                           ElevatedButton(
                                             onPressed: () async {
@@ -103,7 +103,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                               );
                                               homeController.update();
                                             },
-                                            child: Text('Last Read'),
+                                            child: Text('Terakhir Dibaca'),
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: appPurple,
                                             ),
@@ -117,7 +117,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                 index,
                                               );
                                             },
-                                            child: Text('Bookmark'),
+                                            child: Text('Markah'),
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: appPurple,
                                             ),
@@ -269,7 +269,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            '${surah.numberOfVerses} Verses | ${surah.revelation?.id}',
+                            '${surah.numberOfVerses} Ayat | ${surah.revelation?.id}',
                             style: TextStyle(
                               fontSize: 16,
                               color: appWhite,

@@ -61,8 +61,8 @@ class HomeController extends GetxController {
     Get.snackbar(
       'Success',
       isLastRead
-          ? 'Last read deleted successfully'
-          : 'Bookmark deleted successfully',
+          ? 'Terakhir dibaca berhasil dihapus'
+          : 'Markah berhasil dihapus',
       colorText: appWhite,
     );
   }

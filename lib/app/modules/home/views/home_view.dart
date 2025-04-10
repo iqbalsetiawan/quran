@@ -17,7 +17,7 @@ class HomeView extends GetView<HomeController> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text('Quran & Hadith App'),
+        title: Text('Aplikasi Quran & Hadith'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -86,7 +86,7 @@ class HomeView extends GetView<HomeController> {
                                           color: appWhite),
                                       SizedBox(width: 10),
                                       Text(
-                                        'Last Read',
+                                        'Terakhir Dibaca',
                                         style: TextStyle(
                                           color: appWhite,
                                         ),
@@ -95,7 +95,7 @@ class HomeView extends GetView<HomeController> {
                                   ),
                                   SizedBox(height: 30),
                                   Text(
-                                    'Loading...',
+                                    'Memuat...',
                                     style: TextStyle(
                                       color: appWhite,
                                       fontSize: 20,
@@ -134,20 +134,20 @@ class HomeView extends GetView<HomeController> {
                           onLongPress: () {
                             if (lastRead != null) {
                               Get.defaultDialog(
-                                title: 'Delete Last Read',
+                                title: 'Hapus Terakhir Dibaca',
                                 middleText:
-                                    'Are you sure you want to delete this last read?',
+                                    'Apakah Anda yakin ingin menghapus terakhir dibaca ini?',
                                 actions: [
                                   OutlinedButton(
                                     onPressed: () => Get.back(),
-                                    child: Text('Cancel'),
+                                    child: Text('Batal'),
                                   ),
                                   ElevatedButton(
                                     onPressed: () => c.deleteBookmark(
                                       lastRead['id'],
                                       true,
                                     ),
-                                    child: Text('Delete'),
+                                    child: Text('Hapus'),
                                   ),
                                 ],
                               );
@@ -187,7 +187,7 @@ class HomeView extends GetView<HomeController> {
                                               color: appWhite),
                                           SizedBox(width: 10),
                                           Text(
-                                            'Last Read',
+                                            'Terakhir Dibaca',
                                             style: TextStyle(
                                               color: appWhite,
                                             ),
@@ -197,7 +197,7 @@ class HomeView extends GetView<HomeController> {
                                       SizedBox(height: 30),
                                       Text(
                                         lastRead == null
-                                            ? 'No last read'
+                                            ? 'Tidak ada terakhir dibaca'
                                             : "${lastRead['surah']}",
                                         style: TextStyle(
                                           color: appWhite,
@@ -207,7 +207,7 @@ class HomeView extends GetView<HomeController> {
                                       Text(
                                         lastRead == null
                                             ? ''
-                                            : 'Juz: ${lastRead['juz']} | Verses: ${lastRead['ayat']}',
+                                            : 'Juz: ${lastRead['juz']} | Ayat: ${lastRead['ayat']}',
                                         style: TextStyle(
                                           color: appWhite,
                                         ),
@@ -228,7 +228,7 @@ class HomeView extends GetView<HomeController> {
                 tabs: [
                   Tab(text: 'Surah'),
                   Tab(text: 'Juz'),
-                  Tab(text: 'Bookmark'),
+                  Tab(text: 'Markah'),
                 ],
               ),
               Expanded(
@@ -243,12 +243,12 @@ class HomeView extends GetView<HomeController> {
                         } else if (snapshot.hasError) {
                           return Center(
                             child: Text(
-                              'Error: ${snapshot.error}',
+                              'Terjadi kesalahan, silakan coba lagi',
                             ),
                           );
                         }
                         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          return Center(child: Text('No data available'));
+                          return Center(child: Text('Tidak ada data'));
                         }
                         return ListView.builder(
                           itemCount: snapshot.data!.length,
@@ -259,7 +259,7 @@ class HomeView extends GetView<HomeController> {
                                 '${surah.name?.transliteration?.id}',
                               ),
                               subtitle: Text(
-                                '${surah.numberOfVerses} Verses | ${surah.revelation?.id}',
+                                '${surah.numberOfVerses} Ayat | ${surah.revelation?.id}',
                                 style: TextStyle(
                                   color: Colors.grey[500],
                                 ),
@@ -311,12 +311,12 @@ class HomeView extends GetView<HomeController> {
                         } else if (snapshot.hasError) {
                           return Center(
                             child: Text(
-                              'Error: ${snapshot.error}',
+                              'Terjadi kesalahan, silakan coba lagi',
                             ),
                           );
                         }
                         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          return Center(child: Text('No data available'));
+                          return Center(child: Text('Tidak ada data'));
                         }
                         return ListView.builder(
                           itemCount: snapshot.data!.length,
@@ -386,13 +386,13 @@ class HomeView extends GetView<HomeController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Start: ${detailJuz.juzStartInfo}',
+                                    'Mulai: ${detailJuz.juzStartInfo}',
                                     style: TextStyle(
                                       color: Colors.grey[500],
                                     ),
                                   ),
                                   Text(
-                                    'End: ${detailJuz.juzEndInfo}',
+                                    'Akhir: ${detailJuz.juzEndInfo}',
                                     style: TextStyle(
                                       color: Colors.grey[500],
                                     ),
@@ -415,12 +415,12 @@ class HomeView extends GetView<HomeController> {
                             } else if (snapshot.hasError) {
                               return Center(
                                 child: Text(
-                                  'Error: ${snapshot.error}',
+                                  'Terjadi kesalahan, silakan coba lagi',
                                 ),
                               );
                             }
                             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                              return Center(child: Text('No data available'));
+                              return Center(child: Text('Tidak ada data'));
                             }
                             return ListView.builder(
                               itemCount: snapshot.data!.length,
@@ -461,7 +461,7 @@ class HomeView extends GetView<HomeController> {
                                   }),
                                   title: Text(bookmark['surah']),
                                   subtitle: Text(
-                                    'Verses: ${bookmark['ayat']} - Via ${bookmark['via']}',
+                                    'Ayat: ${bookmark['ayat']} | Via ${bookmark['via']}',
                                     style: TextStyle(
                                       color: Colors.grey[500],
                                     ),

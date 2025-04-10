@@ -28,7 +28,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
             itemCount: detailJuz.verses?.length ?? 0,
             itemBuilder: (context, index) {
               if (detailJuz.verses == null || detailJuz.verses!.isEmpty) {
-                return Center(child: Text('No data available'));
+                return Center(child: Text('Tidak ada data'));
               }
 
               juz.Verses ayat = detailJuz.verses![index];

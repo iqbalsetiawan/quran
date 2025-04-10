@@ -38,10 +38,11 @@ class DetailBookView extends GetView<DetailBookController> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
+                return Center(
+                    child: Text('Terjadi kesalahan, silakan coba lagi'));
               }
               if (!snapshot.hasData || snapshot.data == null) {
-                return Center(child: Text('No data available'));
+                return Center(child: Text('Tidak ada data'));
               }
               return ListView.builder(
                 shrinkWrap: true,
