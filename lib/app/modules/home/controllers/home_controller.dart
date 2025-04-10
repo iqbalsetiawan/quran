@@ -58,12 +58,11 @@ class HomeController extends GetxController {
     await db.delete('bookmark', where: 'id = ?', whereArgs: [id]);
     update();
     Get.back();
-    Get.snackbar(
+    Snackbar.showSnackbar(
       'Success',
       isLastRead
           ? 'Terakhir dibaca berhasil dihapus'
           : 'Markah berhasil dihapus',
-      colorText: appWhite,
     );
   }
 

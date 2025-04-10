@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:quran/app/constants/color.dart';
+import 'package:quran/app/components/snackbar.dart';
 import 'package:quran/app/data/db/bookmark.dart';
 import 'package:quran/app/data/models/surah_detail.dart';
 import 'package:http/http.dart' as http;
@@ -12,16 +12,24 @@ import 'package:sqflite/sqlite_api.dart';
 
 class DetailSurahController extends GetxController {
   AutoScrollController scrollController = AutoScrollController();
-  final player = AudioPlayer();
-
-  Verse? lastVerse;
-
   DatabaseManager database = DatabaseManager.instance;
+  Verse? lastVerse;
+  final player = AudioPlayer();
 
   @override
   void onClose() {
     player.dispose();
     super.onClose();
+  }
+
+  @override
+  void onInit() {
+    _setupPlayerListener();
+    super.onInit();
+  }
+
+  void _setupPlayerListener() {
+    player.playbackEventStream.listen((event) {}, onError: _handleError);
   }
 
   Future<SurahDetail> getDetailSurah(String id) async {
@@ -33,47 +41,23 @@ class DetailSurahController extends GetxController {
   }
 
   void playAudio(Verse verse) async {
-    if (verse.audio?.primary != null) {
-      try {
-        if (lastVerse == null) {
-          lastVerse = verse;
-        }
-        lastVerse?.audioStatus = 'stop';
-        lastVerse = verse;
-        lastVerse?.audioStatus = 'stop';
-        update();
-        await player.stop();
-        await player.setUrl(verse.audio?.primary ?? '');
-        verse.audioStatus = 'play';
-        update();
-        await player.play();
-        verse.audioStatus = 'stop';
-        await player.stop();
-        update();
-      } on PlayerException catch (e) {
-        print("Error code: ${e.code}");
-        print("Error message: ${e.message}");
-        Get.snackbar('Error', '${e.message}');
-      } on PlayerInterruptedException catch (e) {
-        print("Connection aborted: ${e.message}");
-        Get.snackbar('Error', 'Connection aborted: ${e.message}');
-      } catch (e) {
-        print('An error occured: $e');
-        Get.snackbar('Error', 'An error occured: $e');
-      }
-
-      player.playbackEventStream.listen((event) {},
-          onError: (Object e, StackTrace st) {
-        if (e is PlatformException) {
-          print('Error code: ${e.code}');
-          print('Error message: ${e.message}');
-          print('AudioSource index: ${e.details?["index"]}');
-        } else {
-          print('An error occurred: $e');
-        }
-      });
-    } else {
-      Get.snackbar('Error', 'Audio not found');
+    try {
+      lastVerse?.audioStatus = 'stop';
+      lastVerse = verse;
+      update();
+      await player.stop();
+      await player.setUrl(verse.audio?.primary ??
+          verse.audio?.secondary?[0] ??
+          verse.audio?.secondary?[1] ??
+          '');
+      verse.audioStatus = 'play';
+      update();
+      await player.play();
+      verse.audioStatus = 'stop';
+      await player.stop();
+      update();
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -82,28 +66,9 @@ class DetailSurahController extends GetxController {
       await player.pause();
       verse.audioStatus = 'pause';
       update();
-    } on PlayerException catch (e) {
-      print("Error code: ${e.code}");
-      print("Error message: ${e.message}");
-      Get.snackbar('Error', '${e.message}');
-    } on PlayerInterruptedException catch (e) {
-      print("Connection aborted: ${e.message}");
-      Get.snackbar('Error', 'Connection aborted: ${e.message}');
     } catch (e) {
-      print('An error occured: $e');
-      Get.snackbar('Error', 'An error occured: $e');
+      _handleError(e);
     }
-
-    player.playbackEventStream.listen((event) {},
-        onError: (Object e, StackTrace st) {
-      if (e is PlatformException) {
-        print('Error code: ${e.code}');
-        print('Error message: ${e.message}');
-        print('AudioSource index: ${e.details?["index"]}');
-      } else {
-        print('An error occurred: $e');
-      }
-    });
   }
 
   void resumeAudio(Verse verse) async {
@@ -113,16 +78,8 @@ class DetailSurahController extends GetxController {
       await player.play();
       verse.audioStatus = 'stop';
       update();
-    } on PlayerException catch (e) {
-      print("Error code: ${e.code}");
-      print("Error message: ${e.message}");
-      Get.snackbar('Error', '${e.message}');
-    } on PlayerInterruptedException catch (e) {
-      print("Connection aborted: ${e.message}");
-      Get.snackbar('Error', 'Connection aborted: ${e.message}');
     } catch (e) {
-      print('An error occured: $e');
-      Get.snackbar('Error', 'An error occured: $e');
+      _handleError(e);
     }
   }
 
@@ -131,16 +88,8 @@ class DetailSurahController extends GetxController {
       await player.stop();
       verse.audioStatus = 'stop';
       update();
-    } on PlayerException catch (e) {
-      print("Error code: ${e.code}");
-      print("Error message: ${e.message}");
-      Get.snackbar('Error', '${e.message}');
-    } on PlayerInterruptedException catch (e) {
-      print("Connection aborted: ${e.message}");
-      Get.snackbar('Error', 'Connection aborted: ${e.message}');
     } catch (e) {
-      print('An error occured: $e');
-      Get.snackbar('Error', 'An error occured: $e');
+      _handleError(e);
     }
   }
 
@@ -179,18 +128,46 @@ class DetailSurahController extends GetxController {
         'last_read': lastRead ? 1 : 0,
       });
       Get.back();
-      Get.snackbar(
+      Snackbar.showSnackbar(
         'Berhasil',
         lastRead ? 'Terakhir dibaca ditambahkan' : 'Markah ditambahkan',
-        colorText: appWhite,
       );
     } else {
       Get.back();
-      Get.snackbar(
+      Snackbar.showSnackbar(
         'Error',
         'Markah sudah ada',
-        colorText: appWhite,
       );
     }
+  }
+
+  void _handleError(Object e, [StackTrace? st]) {
+    String title = 'Error';
+    String message;
+
+    switch (e.runtimeType) {
+      case PlayerException:
+        final error = e as PlayerException;
+        print("Error code: ${error.code}");
+        print("Error message: ${error.message}");
+        message = error.message ?? 'Audio playback failed';
+        break;
+      case PlayerInterruptedException:
+        final error = e as PlayerInterruptedException;
+        print("Connection aborted: ${error.message}");
+        message = 'Connection aborted: ${error.message}';
+        break;
+      case PlatformException:
+        final error = e as PlatformException;
+        print('Error code: ${error.code}');
+        print('Error message: ${error.message}');
+        print('AudioSource index: ${error.details?["index"]}');
+        message = error.message ?? 'Platform error occurred';
+        break;
+      default:
+        print('An error occurred: $e');
+        message = 'An error occurred: $e';
+    }
+    Snackbar.showSnackbar(title, message);
   }
 }
