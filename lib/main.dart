@@ -8,12 +8,18 @@ import 'app/routes/app_pages.dart';
 void main() async {
   await GetStorage.init();
   final box = GetStorage();
+
+  bool isFirstLaunch = box.read('isFirstLaunch') ?? true;
+  if (isFirstLaunch) {
+    await box.write('isFirstLaunch', false);
+  }
+
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: box.read('themeDark') == null ? themeLight : themeDark,
       title: "Application",
-      initialRoute: Routes.INTRODUCTION,
+      initialRoute: isFirstLaunch ? Routes.INTRODUCTION : Routes.HOME,
       getPages: AppPages.routes,
     ),
   );
