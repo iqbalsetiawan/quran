@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:quran/app/components/snackbar.dart';
 
 import 'package:quran/app/constants/color.dart';
 import 'package:quran/app/data/db/bookmark.dart';
@@ -16,31 +17,45 @@ class HomeController extends GetxController {
   DatabaseManager database = DatabaseManager.instance;
 
   Future<List<Surah>> getAllSurah() async {
-    Uri url = Uri.parse('https://api.quran.gading.dev/surah');
-    var response = await http.get(url);
-    List? data = (json.decode(response.body) as Map<String, dynamic>)['data'];
-    if (data == null || data.isEmpty) {
-      return [];
-    } else {
-      allSurah.value = data.map((e) => Surah.fromJson(e)).toList();
+    if (box.read('allSurah') != null) {
+      List<dynamic> savedData = box.read('allSurah');
+      allSurah.value = savedData.map((e) => Surah.fromJson(e)).toList();
       return allSurah;
+    } else {
+      Uri url = Uri.parse('https://api.quran.gading.dev/surah');
+      var response = await http.get(url);
+      List? data = (json.decode(response.body) as Map<String, dynamic>)['data'];
+
+      if (data == null || data.isEmpty) {
+        return [];
+      } else {
+        allSurah.value = data.map((e) => Surah.fromJson(e)).toList();
+        box.write('allSurah', data);
+        return allSurah;
+      }
     }
   }
 
   Future<List<Juz>> getAllJuz() async {
-    List<Juz> allJuz = [];
-    for (int i = 1; i <= 30; i++) {
-      Uri url = Uri.parse('https://api.quran.gading.dev/juz/$i');
-      var response = await http.get(url);
-      Map<String, dynamic>? data =
-          (json.decode(response.body) as Map<String, dynamic>)['data'];
-      if (data == null || data.isEmpty) {
-        return [];
-      } else {
-        allJuz.add(Juz.fromJson(data));
+    if (box.read('allJuz') != null) {
+      List<dynamic> savedData = box.read('allJuz');
+      return savedData.map((e) => Juz.fromJson(e)).toList();
+    } else {
+      List<Juz> allJuz = [];
+      for (int i = 1; i <= 30; i++) {
+        Uri url = Uri.parse('https://api.quran.gading.dev/juz/$i');
+        var response = await http.get(url);
+        Map<String, dynamic>? data =
+            (json.decode(response.body) as Map<String, dynamic>)['data'];
+        if (data == null || data.isEmpty) {
+          return [];
+        } else {
+          allJuz.add(Juz.fromJson(data));
+        }
       }
+      box.write('allJuz', allJuz.map((e) => e.toJson()).toList());
+      return allJuz;
     }
-    return allJuz;
   }
 
   Future<List<Map<String, dynamic>>> getAllBookmark() async {
