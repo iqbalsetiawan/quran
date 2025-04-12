@@ -5,18 +5,18 @@ import 'package:quran/app/constants/color.dart';
 import 'package:quran/app/data/models/juz.dart' as juz;
 import 'package:quran/app/data/models/surah.dart';
 import 'package:quran/app/modules/detail_juz/controllers/detail_juz_controller.dart';
-import 'package:quran/app/modules/home/controllers/home_controller.dart';
+import 'package:quran/app/modules/quran/controllers/quran_controller.dart';
 
 class DetailJuzView extends GetView<DetailJuzController> {
   final juz.Juz detailJuz = Get.arguments[0];
   final List<Surah> allSurahInJuz = Get.arguments[1];
-  final homeController = Get.find<HomeController>();
+  final homeController = Get.find<QuranController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Juz ${detailJuz.juz}'),
+        title: Text('JUZ ${detailJuz.juz}'),
         centerTitle: true,
       ),
       body: ListView(
@@ -85,40 +85,63 @@ class DetailJuzView extends GetView<DetailJuzController> {
                         );
                       },
                       child: Container(
-                        width: Get.width,
-                        margin: EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(
                             colors: [appPurpleLight1, appPurpleDark],
                           ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
+                        child: Material(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(20),
+                          child: Stack(
                             children: [
-                              Text(
-                                '${allSurahInJuz[surahIndex].name?.transliteration?.id?.toUpperCase()}',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: appWhite,
+                              Positioned(
+                                bottom: -50,
+                                right: 0,
+                                child: Opacity(
+                                  opacity: 0.7,
+                                  child: Container(
+                                    height: 200,
+                                    width: 200,
+                                    child: Image.asset(
+                                      'assets/images/logo.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              Text(
-                                '(${allSurahInJuz[surahIndex].name?.translation?.id?.toUpperCase()})',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: appWhite,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                '${allSurahInJuz[surahIndex].numberOfVerses} Verses | ${allSurahInJuz[surahIndex].revelation?.id}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: appWhite,
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      '${allSurahInJuz[surahIndex].name?.transliteration?.id?.toUpperCase()}',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: appWhite,
+                                      ),
+                                    ),
+                                    Text(
+                                      '(${allSurahInJuz[surahIndex].name?.translation?.id?.toUpperCase()})',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: appWhite,
+                                      ),
+                                    ),
+                                    Divider(
+                                      color: appWhite,
+                                    ),
+                                    Text(
+                                      '${allSurahInJuz[surahIndex].revelation?.id} | ${allSurahInJuz[surahIndex].numberOfVerses} Ayat',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: appWhite,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -127,10 +150,28 @@ class DetailJuzView extends GetView<DetailJuzController> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      if (ayat.number?.inSurah == 1 &&
+                          ayat.number?.inQuran != 1 &&
+                          ayat.number?.inQuran != 1236) ...[
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+                              style: TextStyle(
+                                fontSize: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),

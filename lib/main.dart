@@ -14,10 +14,13 @@ void main() async {
     await box.write('isFirstLaunch', false);
   }
 
+  bool isDark = box.read('themeDark') ?? false;
+
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: box.read('themeDark') == null ? themeLight : themeDark,
+      theme: isDark ? themeDark : themeLight,
+      themeMode: ThemeMode.light,
       title: "Application",
       initialRoute: isFirstLaunch ? Routes.INTRODUCTION : Routes.HOME,
       getPages: AppPages.routes,

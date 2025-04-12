@@ -4,13 +4,14 @@ import 'package:get/get.dart';
 import 'package:quran/app/constants/color.dart';
 import 'package:quran/app/data/models/detail_surah.dart' as detail;
 import 'package:quran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
-import 'package:quran/app/modules/home/controllers/home_controller.dart';
+import 'package:quran/app/modules/quran/controllers/quran_controller.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 // ignore: must_be_immutable
 class DetailSurahView extends GetView<DetailSurahController> {
-  final homeController = Get.find<HomeController>();
+  final quranController = Get.find<QuranController>();
   Map<String, dynamic>? bookmark;
+  Widget? bismillahWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -32,23 +33,46 @@ class DetailSurahView extends GetView<DetailSurahController> {
           if (Get.arguments['bookmark'] != null) {
             bookmark = Get.arguments['bookmark'];
             controller.scrollController.scrollToIndex(
-              bookmark!['index_ayat'] + 2,
+              bookmark!['index_ayat'] + 3,
               preferPosition: AutoScrollPosition.begin,
             );
           }
 
           detail.DetailSurah surah = snapshot.data!;
+          if (surah.preBismillah != null &&
+              snapshot.data!.verses!
+                  .any((verse) => verse.number!.inSurah == 1)) {
+            bismillahWidget = AutoScrollTag(
+              key: ValueKey(2),
+              index: 2,
+              controller: controller.scrollController,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    '${surah.preBismillah!.text?.arab}',
+                    style: TextStyle(
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
 
           List<Widget> allAyat = List.generate(
             snapshot.data!.verses!.length,
             (index) {
               detail.Verse? ayat = snapshot.data!.verses![index];
               return AutoScrollTag(
-                key: ValueKey(index + 2),
-                index: index + 2,
+                key: ValueKey(index + 3),
+                index: index + 3,
                 controller: controller.scrollController,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
                       margin: EdgeInsets.only(top: 10),
@@ -101,7 +125,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                 ayat,
                                                 index,
                                               );
-                                              homeController.update();
+                                              quranController.update();
                                             },
                                             child: Text('Terakhir Dibaca'),
                                             style: ElevatedButton.styleFrom(
@@ -116,7 +140,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                 ayat,
                                                 index,
                                               );
-                                              homeController.update();
+                                              quranController.update();
                                             },
                                             child: Text('Markah'),
                                             style: ElevatedButton.styleFrom(
@@ -248,32 +272,57 @@ class DetailSurahView extends GetView<DetailSurahController> {
                         ],
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
+                    child: Material(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                      child: Stack(
                         children: [
-                          Text(
-                            '${surah.name?.transliteration?.id?.toUpperCase()}',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: appWhite,
+                          Positioned(
+                            bottom: -50,
+                            right: 0,
+                            child: Opacity(
+                              opacity: 0.7,
+                              child: Container(
+                                height: 200,
+                                width: 200,
+                                child: Image.asset(
+                                  'assets/images/logo.png',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
                             ),
                           ),
-                          Text(
-                            '(${surah.name?.translation?.id?.toUpperCase()})',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: appWhite,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            '${surah.numberOfVerses} Ayat | ${surah.revelation?.id}',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: appWhite,
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                Text(
+                                  '${surah.name?.transliteration?.id?.toUpperCase()}',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: appWhite,
+                                  ),
+                                ),
+                                Text(
+                                  '(${surah.name?.translation?.id?.toUpperCase()})',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: appWhite,
+                                  ),
+                                ),
+                                Divider(
+                                  color: appWhite,
+                                ),
+                                Text(
+                                  ' ${surah.revelation?.id} | ${surah.numberOfVerses} Ayat',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: appWhite,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -288,6 +337,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                 controller: controller.scrollController,
                 child: SizedBox(height: 20),
               ),
+              if (bismillahWidget != null) bismillahWidget!,
               ...allAyat,
             ],
           );

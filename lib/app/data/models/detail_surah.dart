@@ -18,8 +18,9 @@ class DetailSurah {
   Name? name;
   Revelation? revelation;
   DetailSurahTafsir? tafsir;
-  dynamic preBismillah;
+  PreBismillah? preBismillah;
   List<Verse>? verses;
+  
 
   DetailSurah({
     this.number,
@@ -43,7 +44,9 @@ class DetailSurah {
         tafsir: json["tafsir"] == null
             ? null
             : DetailSurahTafsir.fromJson(json["tafsir"]),
-        preBismillah: json["preBismillah"],
+        preBismillah: json["preBismillah"] == null
+            ? null
+            : PreBismillah.fromJson(json["preBismillah"]),
         verses: json["verses"] == null
             ? []
             : List<Verse>.from(json["verses"]!.map((x) => Verse.fromJson(x))),
@@ -56,7 +59,7 @@ class DetailSurah {
         "name": name?.toJson(),
         "revelation": revelation?.toJson(),
         "tafsir": tafsir?.toJson(),
-        "preBismillah": preBismillah,
+        "preBismillah": preBismillah?.toJson(),
         "verses": verses == null
             ? []
             : List<dynamic>.from(verses!.map((x) => x.toJson())),
@@ -112,6 +115,95 @@ class Translation {
   Map<String, dynamic> toJson() => {
         "en": en,
         "id": id,
+      };
+}
+
+class PreBismillah {
+  Text? text;
+  Translation? translation;
+  Audio? audio;
+
+  PreBismillah({
+    this.text,
+    this.translation,
+    this.audio,
+  });
+
+  factory PreBismillah.fromJson(Map<String, dynamic> json) => PreBismillah(
+        text: json["text"] == null ? null : Text.fromJson(json["text"]),
+        translation: json["translation"] == null
+            ? null
+            : Translation.fromJson(json["translation"]),
+        audio: json["audio"] == null ? null : Audio.fromJson(json["audio"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "text": text?.toJson(),
+        "translation": translation?.toJson(),
+        "audio": audio?.toJson(),
+      };
+}
+
+class Audio {
+  String? primary;
+  List<String>? secondary;
+
+  Audio({
+    this.primary,
+    this.secondary,
+  });
+
+  factory Audio.fromJson(Map<String, dynamic> json) => Audio(
+        primary: json["primary"],
+        secondary: json["secondary"] == null
+            ? []
+            : List<String>.from(json["secondary"]!.map((x) => x)),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "primary": primary,
+        "secondary": secondary == null
+            ? []
+            : List<dynamic>.from(secondary!.map((x) => x)),
+      };
+}
+
+class Text {
+  String? arab;
+  Transliteration? transliteration;
+
+  Text({
+    this.arab,
+    this.transliteration,
+  });
+
+  factory Text.fromJson(Map<String, dynamic> json) => Text(
+        arab: json["arab"],
+        transliteration: json["transliteration"] == null
+            ? null
+            : Transliteration.fromJson(json["transliteration"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "arab": arab,
+        "transliteration": transliteration?.toJson(),
+      };
+}
+
+class Transliteration {
+  String? en;
+
+  Transliteration({
+    this.en,
+  });
+
+  factory Transliteration.fromJson(Map<String, dynamic> json) =>
+      Transliteration(
+        en: json["en"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "en": en,
       };
 }
 
@@ -196,30 +288,6 @@ class Verse {
         "audio": audio?.toJson(),
         "tafsir": tafsir?.toJson(),
         "audioStatus": audioStatus,
-      };
-}
-
-class Audio {
-  String? primary;
-  List<String>? secondary;
-
-  Audio({
-    this.primary,
-    this.secondary,
-  });
-
-  factory Audio.fromJson(Map<String, dynamic> json) => Audio(
-        primary: json["primary"],
-        secondary: json["secondary"] == null
-            ? []
-            : List<String>.from(json["secondary"]!.map((x) => x)),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "primary": primary,
-        "secondary": secondary == null
-            ? []
-            : List<dynamic>.from(secondary!.map((x) => x)),
       };
 }
 
@@ -332,44 +400,5 @@ class Id {
   Map<String, dynamic> toJson() => {
         "short": short,
         "long": long,
-      };
-}
-
-class Text {
-  String? arab;
-  Transliteration? transliteration;
-
-  Text({
-    this.arab,
-    this.transliteration,
-  });
-
-  factory Text.fromJson(Map<String, dynamic> json) => Text(
-        arab: json["arab"],
-        transliteration: json["transliteration"] == null
-            ? null
-            : Transliteration.fromJson(json["transliteration"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "arab": arab,
-        "transliteration": transliteration?.toJson(),
-      };
-}
-
-class Transliteration {
-  String? en;
-
-  Transliteration({
-    this.en,
-  });
-
-  factory Transliteration.fromJson(Map<String, dynamic> json) =>
-      Transliteration(
-        en: json["en"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "en": en,
       };
 }

@@ -2,13 +2,13 @@ name: quran
 version: 1.0.0+1
 publish_to: none
 description: A new Flutter project.
-environment: 
-  sdk: '>=3.0.1 <4.0.0'
+environment:
+  sdk: ">=3.0.1 <4.0.0"
 
-dependencies: 
+dependencies:
   cupertino_icons: ^1.0.2
   get: any
-  flutter: 
+  flutter:
     sdk: flutter
   lottie: ^2.6.0
   http: ^1.1.0
@@ -18,14 +18,13 @@ dependencies:
   path_provider: ^2.1.2
   scroll_to_index: ^3.0.1
 
-dev_dependencies: 
+dev_dependencies:
   flutter_lints: ^2.0.0
-  flutter_test: 
+  flutter_test:
     sdk: flutter
 
-flutter: 
+flutter:
   uses-material-design: true
-  assets: 
+  assets:
     - assets/lotties/
     - assets/images/
-

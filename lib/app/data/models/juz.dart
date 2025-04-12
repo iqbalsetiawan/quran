@@ -65,7 +65,7 @@ class Juz {
 class Verses {
   Number? number;
   Meta? meta;
-  Text? text;
+  Texttt? text;
   Translation? translation;
   Audio? audio;
   Tafsir? tafsir;
@@ -84,7 +84,7 @@ class Verses {
   factory Verses.fromJson(Map<String, dynamic> json) => Verses(
         number: json['number'] != null ? Number.fromJson(json['number']) : null,
         meta: json['meta'] != null ? Meta.fromJson(json['meta']) : null,
-        text: json['text'] != null ? Text.fromJson(json['text']) : null,
+        text: json['text'] != null ? Texttt.fromJson(json['text']) : null,
         translation: json['translation'] != null
             ? Translation.fromJson(json['translation'])
             : null,
@@ -194,13 +194,13 @@ class Sajda {
   }
 }
 
-class Text {
+class Texttt {
   String? arab;
   Transliteration? transliteration;
 
-  Text({this.arab, this.transliteration});
+  Texttt({this.arab, this.transliteration});
 
-  Text.fromJson(Map<String, dynamic> json) {
+  Texttt.fromJson(Map<String, dynamic> json) {
     arab = json['arab'];
     transliteration = json['transliteration'] != null
         ? new Transliteration.fromJson(json['transliteration'])
