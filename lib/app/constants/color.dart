@@ -29,6 +29,10 @@ ThemeData themeLight = ThemeData(
   listTileTheme: ListTileThemeData(
     textColor: appPurpleDark,
   ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    selectedItemColor: appPurpleLight1,
+    unselectedItemColor: Colors.grey,
+  ),
 );
 
 ThemeData themeDark = ThemeData(
@@ -52,5 +56,10 @@ ThemeData themeDark = ThemeData(
   ),
   listTileTheme: ListTileThemeData(
     textColor: appWhite,
+  ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: appPurpleLight1,
+    selectedItemColor: appWhite,
+    unselectedIconTheme: IconThemeData(color: Colors.grey[900]),
   ),
 );

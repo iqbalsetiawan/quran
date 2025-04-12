@@ -18,7 +18,7 @@ class IntroductionView extends GetView<IntroductionController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Quran & Hadith App',
+              'Aplikasi Quran & Hadith',
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -28,7 +28,7 @@ class IntroductionView extends GetView<IntroductionController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50),
               child: Text(
-                'Welcome to the Quran & Hadith App',
+                'Selamat Datang di Aplikasi Quran & Hadith',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -48,7 +48,7 @@ class IntroductionView extends GetView<IntroductionController> {
                 Get.offAllNamed(Routes.HOME);
               },
               child: Text(
-                'Get Started',
+                'Mulai',
                 style: TextStyle(
                   color: Get.isDarkMode ? appPurpleDark : appWhite,
                 ),

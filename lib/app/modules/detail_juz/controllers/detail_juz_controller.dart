@@ -1,20 +1,16 @@
-import 'dart:convert';
-
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:quran/app/components/snackbar.dart';
 import 'package:quran/app/data/db/bookmark.dart';
-import 'package:quran/app/data/models/detail_surah.dart';
-import 'package:http/http.dart' as http;
-import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:quran/app/data/models/juz.dart';
+import 'package:quran/app/data/models/surah.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class DetailSurahController extends GetxController {
-  AutoScrollController scrollController = AutoScrollController();
+class DetailJuzController extends GetxController {
+  AudioPlayer player = AudioPlayer();
   DatabaseManager database = DatabaseManager.instance;
-  Verse? lastVerse;
-  final player = AudioPlayer();
+  Verses? lastVerse;
 
   @override
   void onClose() {
@@ -32,15 +28,7 @@ class DetailSurahController extends GetxController {
     player.playbackEventStream.listen((event) {}, onError: _handleError);
   }
 
-  Future<DetailSurah> getDetailSurah(String id) async {
-    Uri url = Uri.parse('https://api.quran.gading.dev/surah/$id');
-    var response = await http.get(url);
-    Map<String, dynamic> data =
-        (json.decode(response.body) as Map<String, dynamic>)['data'];
-    return DetailSurah.fromJson(data);
-  }
-
-  void playAudio(Verse verse) async {
+  Future<void> playAudio(Verses verse) async {
     try {
       lastVerse?.audioStatus = 'stop';
       lastVerse = verse;
@@ -61,7 +49,7 @@ class DetailSurahController extends GetxController {
     }
   }
 
-  void pauseAudio(Verse verse) async {
+  Future<void> pauseAudio(Verses verse) async {
     try {
       await player.pause();
       verse.audioStatus = 'pause';
@@ -71,7 +59,7 @@ class DetailSurahController extends GetxController {
     }
   }
 
-  void resumeAudio(Verse verse) async {
+  Future<void> resumeAudio(Verses verse) async {
     try {
       verse.audioStatus = 'play';
       update();
@@ -83,7 +71,7 @@ class DetailSurahController extends GetxController {
     }
   }
 
-  void stopAudio(Verse verse) async {
+  Future<void> stopAudio(Verses verse) async {
     try {
       await player.stop();
       verse.audioStatus = 'stop';
@@ -94,7 +82,7 @@ class DetailSurahController extends GetxController {
   }
 
   Future<void> addBookmark(
-      bool lastRead, DetailSurah surah, Verse verse, int indexAyat) async {
+      bool lastRead, Surah surah, Verses verse, int indexAyat) async {
     Database db = await database.db;
     bool flagExist = false;
 
@@ -109,7 +97,7 @@ class DetailSurahController extends GetxController {
             surah.number,
             verse.number?.inSurah,
             verse.meta?.juz,
-            'Surah',
+            'Juz',
             indexAyat
           ]);
       if (duplicate.isNotEmpty) {
@@ -123,7 +111,7 @@ class DetailSurahController extends GetxController {
         'number_surah': surah.number,
         'ayat': verse.number?.inSurah,
         'juz': verse.meta?.juz,
-        'via': 'Surah',
+        'via': 'Juz',
         'index_ayat': indexAyat,
         'last_read': lastRead ? 1 : 0,
       });

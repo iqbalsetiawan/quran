@@ -1,38 +1,33 @@
 import 'package:get/get.dart';
+import 'package:quran/app/modules/home/views/home_view.dart';
 
-import '../modules/detail_book/bindings/detail_book_binding.dart';
-import '../modules/detail_book/views/detail_book_view.dart';
+import '../modules/detail_juz/bindings/detail_juz_binding.dart';
+import '../modules/detail_juz/views/detail_juz_view.dart';
 import '../modules/detail_surah/bindings/detail_surah_binding.dart';
 import '../modules/detail_surah/views/detail_surah_view.dart';
+import '../modules/hadis/bindings/hadis_binding.dart';
 import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
+import '../modules/hadis/views/hadis_view.dart';
 import '../modules/introduction/bindings/introduction_binding.dart';
 import '../modules/introduction/views/introduction_view.dart';
-import '../modules/search/bindings/search_binding.dart';
-import '../modules/search/views/search_view.dart';
+import '../modules/quran/bindings/quran_binding.dart';
+import '../modules/quran/quran.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
-
   static final routes = [
     GetPage(
-      name: _Paths.HOME,
-      page: () => const HomeView(),
-      binding: HomeBinding(),
-    ),
-    GetPage(
       name: _Paths.INTRODUCTION,
-      page: () => const IntroductionView(),
+      page: () => IntroductionView(),
       binding: IntroductionBinding(),
     ),
     GetPage(
-      name: _Paths.DETAIL_BOOK,
-      page: () => DetailBookView(),
-      binding: DetailBookBinding(),
+      name: _Paths.HOME,
+      page: () => HomeView(),
+      binding: HomeBinding(),
     ),
     GetPage(
       name: _Paths.DETAIL_SURAH,
@@ -40,9 +35,19 @@ class AppPages {
       binding: DetailSurahBinding(),
     ),
     GetPage(
-      name: _Paths.SEARCH,
-      page: () => const SearchView(),
-      binding: SearchBinding(),
+      name: _Paths.DETAIL_JUZ,
+      page: () => DetailJuzView(),
+      binding: DetailJuzBinding(),
+    ),
+    GetPage(
+      name: _Paths.QURAN,
+      page: () => const Quran(),
+      binding: QuranBinding(),
+    ),
+    GetPage(
+      name: _Paths.HADIS,
+      page: () => const HadisView(),
+      binding: HadisBinding(),
     ),
   ];
 }

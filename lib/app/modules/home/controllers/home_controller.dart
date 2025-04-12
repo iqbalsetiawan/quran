@@ -1,26 +1,25 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:get_storage/get_storage.dart';
 import 'package:quran/app/constants/color.dart';
-import 'package:quran/app/data/models/surah_main.dart';
 
 class HomeController extends GetxController {
   RxBool isDarkMode = false.obs;
+  final box = GetStorage();
 
-  Future<List<Surah>> getAllSurah() async {
-    Uri url = Uri.parse('https://api.quran.gading.dev/surah');
-    var response = await http.get(url);
-    List? data = (json.decode(response.body) as Map<String, dynamic>)['data'];
-    if (data == null || data.isEmpty) {
-      return [];
-    } else {
-      return data.map((e) => Surah.fromJson(e)).toList();
-    }
+  @override
+  void onInit() {
+    super.onInit();
+    bool? storedTheme = box.read('themeDark');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      isDarkMode.value = storedTheme ?? false;
+      Get.changeTheme(isDarkMode.value ? themeDark : themeLight);
+    });
   }
 
   void toggleDarkMode() {
-    Get.changeTheme(Get.isDarkMode ? themeLight : themeDark);
     isDarkMode.toggle();
+    Get.changeTheme(isDarkMode.value ? themeDark : themeLight);
+    box.write('themeDark', isDarkMode.value);
   }
 }
