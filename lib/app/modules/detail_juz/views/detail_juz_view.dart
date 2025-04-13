@@ -151,27 +151,27 @@ class DetailJuzView extends GetView<DetailJuzController> {
                     ),
                   ),
                   SizedBox(height: 20),
+                  if (ayat.number?.inSurah == 1 &&
+                      ayat.number?.inQuran != 1 &&
+                      ayat.number?.inQuran != 1236) ...[
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (ayat.number?.inSurah == 1 &&
-                          ayat.number?.inQuran != 1 &&
-                          ayat.number?.inQuran != 1236) ...[
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
-                              style: TextStyle(
-                                fontSize: 30,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -188,8 +188,8 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                 children: [
                                   Container(
                                     margin: EdgeInsets.only(right: 10),
-                                    height: 40,
-                                    width: 40,
+                                    height: 45,
+                                    width: 45,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: AssetImage(

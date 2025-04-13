@@ -50,13 +50,12 @@ class DetailSurahView extends GetView<DetailSurahController> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Center(
-                  child: Text(
-                    '${surah.preBismillah!.text?.arab}',
-                    style: TextStyle(
-                      fontSize: 30,
-                    ),
+                child: Text(
+                  '${surah.preBismillah!.text?.arab}',
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.05,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             );
@@ -89,8 +88,8 @@ class DetailSurahView extends GetView<DetailSurahController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              height: 40,
-                              width: 40,
+                              height: 45,
+                              width: 45,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: AssetImage(

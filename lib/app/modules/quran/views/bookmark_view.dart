@@ -45,8 +45,8 @@ class BookmarkTabView extends StatelessWidget {
                   },
                   leading: Obx(() {
                     return Container(
-                      width: 35,
-                      height: 35,
+                      width: 45,
+                      height: 45,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(
