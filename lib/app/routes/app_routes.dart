@@ -9,6 +9,7 @@ abstract class Routes {
   static const DETAIL_JUZ = _Paths.DETAIL_JUZ;
   static const QURAN = _Paths.QURAN;
   static const HADIS = _Paths.HADIS;
+  static const SETTING = _Paths.SETTING;
 }
 
 abstract class _Paths {
@@ -19,4 +20,5 @@ abstract class _Paths {
   static const DETAIL_JUZ = '/detail-juz';
   static const QURAN = '/quran';
   static const HADIS = '/hadis';
+  static const SETTING = '/setting';
 }

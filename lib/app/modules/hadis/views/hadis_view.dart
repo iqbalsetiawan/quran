@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:quran/app/views/base_view.dart';
 
 class HadisView extends BaseView {
   const HadisView({super.key});
+
+  @override
+  String get appBarTitle => 'app_title'.tr;
 
   @override
   Widget get body => Padding(

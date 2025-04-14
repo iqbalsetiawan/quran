@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quran/app/modules/quran/quran.dart';
 import 'package:quran/app/modules/hadis/views/hadis_view.dart';
+import 'package:quran/app/modules/setting/views/setting_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -14,20 +15,21 @@ class HomeView extends StatelessWidget {
       () => Scaffold(
         body: IndexedStack(
           index: currentIndex.value,
-          children: const [
-            Quran(),
-            HadisView(),
-          ],
+          children: const [Quran(), HadisView(), SettingView()],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          items: const [
+          items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.menu_book_rounded),
-              label: 'Quran',
+              label: 'quran'.tr,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.menu_book_rounded),
-              label: 'Hadis',
+              label: 'hadith'.tr,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'setting'.tr,
             ),
           ],
           currentIndex: currentIndex.value,

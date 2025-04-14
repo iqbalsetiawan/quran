@@ -72,10 +72,10 @@ class QuranController extends GetxController {
     update();
     Get.back();
     Snackbar.showSnackbar(
-      'Success',
+      'success'.tr,
       isLastRead
-          ? 'Terakhir dibaca berhasil dihapus'
-          : 'Markah berhasil dihapus',
+          ? 'last_read_deleted'.tr
+          : 'bookmark_deleted'.tr,
     );
   }
 

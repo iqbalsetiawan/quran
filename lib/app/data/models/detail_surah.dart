@@ -20,7 +20,6 @@ class DetailSurah {
   DetailSurahTafsir? tafsir;
   PreBismillah? preBismillah;
   List<Verse>? verses;
-  
 
   DetailSurah({
     this.number,
@@ -256,6 +255,7 @@ class Verse {
   Audio? audio;
   VerseTafsir? tafsir;
   String audioStatus;
+  bool bookmarked;
 
   Verse({
     this.number,
@@ -265,6 +265,7 @@ class Verse {
     this.audio,
     this.tafsir,
     this.audioStatus = 'stop',
+    this.bookmarked = false,
   });
 
   factory Verse.fromJson(Map<String, dynamic> json) => Verse(
@@ -288,6 +289,7 @@ class Verse {
         "audio": audio?.toJson(),
         "tafsir": tafsir?.toJson(),
         "audioStatus": audioStatus,
+        "bookmarked": bookmarked,
       };
 }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quran/app/constants/color.dart';
+import 'package:quran/app/controllers/language_controller.dart';
 
 import 'package:quran/app/data/models/juz.dart' as juz;
 import 'package:quran/app/data/models/surah.dart';
@@ -11,6 +12,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
   final juz.Juz detailJuz = Get.arguments[0];
   final List<Surah> allSurahInJuz = Get.arguments[1];
   final homeController = Get.find<QuranController>();
+  final languageController = Get.find<LanguageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
             itemCount: detailJuz.verses?.length ?? 0,
             itemBuilder: (context, index) {
               if (detailJuz.verses == null || detailJuz.verses!.isEmpty) {
-                return Center(child: Text('Tidak ada data'));
+                return Center(child: Text('no_data'.tr));
               }
 
               juz.Verses ayat = detailJuz.verses![index];
@@ -124,7 +126,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                       ),
                                     ),
                                     Text(
-                                      '(${allSurahInJuz[surahIndex].name?.translation?.id?.toUpperCase()})',
+                                      '(${languageController.currentLanguage.value == 'id_ID' ? allSurahInJuz[surahIndex].name?.translation?.id?.toUpperCase() : allSurahInJuz[surahIndex].name?.translation?.en?.toUpperCase()})',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -135,7 +137,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                       color: appWhite,
                                     ),
                                     Text(
-                                      '${allSurahInJuz[surahIndex].revelation?.id} | ${allSurahInJuz[surahIndex].numberOfVerses} Ayat',
+                                      '${languageController.currentLanguage.value == 'id_ID' ? allSurahInJuz[surahIndex].revelation?.id : allSurahInJuz[surahIndex].revelation?.en} | ${allSurahInJuz[surahIndex].numberOfVerses} ${'ayat'.tr}',
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: appWhite,
@@ -218,19 +220,21 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                   children: [
                                     IconButton(
                                       icon: Icon(Icons.bookmark_add_outlined),
+                                      tooltip: 'add_bookmark'.tr,
                                       onPressed: () {
                                         Get.defaultDialog(
                                           titlePadding: EdgeInsets.only(
                                               top: 20, bottom: 10),
-                                          title: 'Segera Hadir',
+                                          title: 'feature_coming_soon'.tr,
                                           middleText:
-                                              'Fitur ini akan segera hadir!',
+                                              'feature_coming_soon_message'.tr,
                                         );
                                       },
                                     ),
                                     (ayat.audioStatus == 'stop')
                                         ? IconButton(
                                             icon: Icon(Icons.play_arrow),
+                                            tooltip: 'play_audio'.tr,
                                             onPressed: () {
                                               c.playAudio(ayat);
                                             },
@@ -240,6 +244,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                               (ayat.audioStatus == 'play')
                                                   ? IconButton(
                                                       icon: Icon(Icons.pause),
+                                                      tooltip: 'pause_audio'.tr,
                                                       onPressed: () {
                                                         c.pauseAudio(ayat);
                                                       },
@@ -248,12 +253,15 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                                       icon: Icon(
                                                         Icons.play_arrow,
                                                       ),
+                                                      tooltip:
+                                                          'resume_audio'.tr,
                                                       onPressed: () {
                                                         c.resumeAudio(ayat);
                                                       },
                                                     ),
                                               IconButton(
                                                 icon: Icon(Icons.stop),
+                                                tooltip: 'stop_audio'.tr,
                                                 onPressed: () {
                                                   c.stopAudio(ayat);
                                                 },
@@ -284,7 +292,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
                       ),
                       SizedBox(height: 25),
                       Text(
-                        '${ayat.translation?.id}',
+                        '${languageController.currentLanguage.value == 'id_ID' ? ayat.translation?.id : ayat.translation?.en}',
                         textAlign: TextAlign.justify,
                         style: TextStyle(fontSize: 18),
                       ),

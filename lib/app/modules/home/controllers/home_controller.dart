@@ -18,8 +18,17 @@ class HomeController extends GetxController {
   }
 
   void toggleDarkMode() {
-    isDarkMode.toggle();
-    Get.changeTheme(isDarkMode.value ? themeDark : themeLight);
-    box.write('themeDark', isDarkMode.value);
+    Get.dialog(
+      Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
+
+    Future.delayed(Duration(milliseconds: 300), () {
+      isDarkMode.toggle();
+      Get.changeTheme(isDarkMode.value ? themeDark : themeLight);
+      box.write('themeDark', isDarkMode.value);
+
+      Get.back();
+    });
   }
 }

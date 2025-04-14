@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quran/app/controllers/language_controller.dart';
 import 'package:quran/app/routes/app_pages.dart';
 import 'package:quran/app/data/models/surah.dart';
 import 'package:quran/app/modules/quran/controllers/quran_controller.dart';
@@ -7,6 +8,7 @@ import 'package:quran/app/modules/home/controllers/home_controller.dart';
 
 class SurahTabView extends StatelessWidget {
   final HomeController controller = Get.find<HomeController>();
+  final LanguageController languageController = Get.find<LanguageController>();
 
   SurahTabView({super.key});
 
@@ -20,14 +22,14 @@ class SurahTabView extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return const Center(
+              return Center(
                 child: Text(
-                  'Terjadi kesalahan, silakan coba lagi',
+                  'error_try_again'.tr,
                 ),
               );
             }
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('Tidak ada data'));
+              return Center(child: Text('no_data'.tr));
             }
             return ListView.builder(
               itemCount: snapshot.data!.length,
@@ -38,12 +40,12 @@ class SurahTabView extends StatelessWidget {
                   title: Text(
                     '${surah.name?.transliteration?.id}',
                   ),
-                  subtitle: Text(
-                    '${surah.revelation?.id} | ${surah.numberOfVerses} Ayat',
-                    style: TextStyle(
-                      color: Colors.grey[500],
-                    ),
-                  ),
+                  subtitle: Obx(() => Text(
+                        '${languageController.currentLanguage.value == 'id_ID' ? surah.revelation?.id : surah.revelation?.en} | ${surah.numberOfVerses} ${'ayat'.tr}',
+                        style: TextStyle(
+                          color: Colors.grey[500],
+                        ),
+                      )),
                   leading: Obx(() {
                     return Container(
                       width: 45,

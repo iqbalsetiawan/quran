@@ -1,17 +1,19 @@
 import 'package:get/get.dart';
-import 'package:quran/app/modules/home/views/home_view.dart';
 
 import '../modules/detail_juz/bindings/detail_juz_binding.dart';
 import '../modules/detail_juz/views/detail_juz_view.dart';
 import '../modules/detail_surah/bindings/detail_surah_binding.dart';
 import '../modules/detail_surah/views/detail_surah_view.dart';
 import '../modules/hadis/bindings/hadis_binding.dart';
-import '../modules/home/bindings/home_binding.dart';
 import '../modules/hadis/views/hadis_view.dart';
+import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/views/home_view.dart';
 import '../modules/introduction/bindings/introduction_binding.dart';
 import '../modules/introduction/views/introduction_view.dart';
 import '../modules/quran/bindings/quran_binding.dart';
 import '../modules/quran/quran.dart';
+import '../modules/setting/bindings/setting_binding.dart';
+import '../modules/setting/views/setting_view.dart';
 
 part 'app_routes.dart';
 
@@ -48,6 +50,11 @@ class AppPages {
       name: _Paths.HADIS,
       page: () => const HadisView(),
       binding: HadisBinding(),
+    ),
+    GetPage(
+      name: _Paths.SETTING,
+      page: () => const SettingView(),
+      binding: SettingBinding(),
     ),
   ];
 }

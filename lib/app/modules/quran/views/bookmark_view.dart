@@ -19,14 +19,14 @@ class BookmarkTabView extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return const Center(
+              return Center(
                 child: Text(
-                  'Terjadi kesalahan, silakan coba lagi',
+                  'error_try_again'.tr,
                 ),
               );
             }
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('Tidak ada data'));
+              return Center(child: Text('no_data'.tr));
             }
             return ListView.builder(
               itemCount: snapshot.data!.length,
@@ -66,7 +66,7 @@ class BookmarkTabView extends StatelessWidget {
                   }),
                   title: Text(bookmark['surah']),
                   subtitle: Text(
-                    'Ayat: ${bookmark['ayat']} | Via ${bookmark['via']}',
+                    '${'ayat'.tr}: ${bookmark['ayat']} | Via ${bookmark['via']}',
                     style: TextStyle(
                       color: Colors.grey[500],
                     ),
@@ -79,6 +79,7 @@ class BookmarkTabView extends StatelessWidget {
                       );
                     },
                     icon: const Icon(Icons.delete),
+                    tooltip: 'delete_bookmark'.tr,
                   ),
                 );
               },
