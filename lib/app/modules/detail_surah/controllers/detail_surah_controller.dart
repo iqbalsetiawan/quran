@@ -37,7 +37,21 @@ class DetailSurahController extends GetxController {
     var response = await http.get(url);
     Map<String, dynamic> data =
         (json.decode(response.body) as Map<String, dynamic>)['data'];
-    return DetailSurah.fromJson(data);
+
+    DetailSurah surah = DetailSurah.fromJson(data);
+
+    if (surah.verses != null) {
+      for (var verse in surah.verses!) {
+        if (verse.number?.inSurah != null) {
+          verse.bookmarked = await isBookmarked(
+            surah.number ?? 0,
+            verse.number!.inSurah!,
+          );
+        }
+      }
+    }
+
+    return surah;
   }
 
   void playAudio(Verse verse) async {
@@ -96,7 +110,6 @@ class DetailSurahController extends GetxController {
   Future<void> addBookmark(
       bool lastRead, DetailSurah surah, Verse verse, int indexAyat) async {
     Database db = await database.db;
-    bool flagExist = false;
 
     if (lastRead) {
       await db.delete('bookmark', where: 'last_read = 1');
@@ -112,33 +125,56 @@ class DetailSurahController extends GetxController {
             'Surah',
             indexAyat
           ]);
+
       if (duplicate.isNotEmpty) {
-        flagExist = true;
+        await db.delete('bookmark',
+            where:
+                "surah = ? and number_surah = ? and ayat = ? and juz = ? and via = ? and index_ayat = ? and last_read = 0",
+            whereArgs: [
+              surah.name?.transliteration?.id,
+              surah.number,
+              verse.number?.inSurah,
+              verse.meta?.juz,
+              'Surah',
+              indexAyat
+            ]);
+
+        verse.bookmarked = false;
+        update();
+        Snackbar.showSnackbar(
+          'success'.tr,
+          'bookmark_deleted'.tr,
+        );
+        return;
       }
     }
 
-    if (!flagExist) {
-      await db.insert('bookmark', {
-        'surah': surah.name?.transliteration?.id,
-        'number_surah': surah.number,
-        'ayat': verse.number?.inSurah,
-        'juz': verse.meta?.juz,
-        'via': 'Surah',
-        'index_ayat': indexAyat,
-        'last_read': lastRead ? 1 : 0,
-      });
-      Get.back();
-      Snackbar.showSnackbar(
-        'Berhasil',
-        lastRead ? 'Terakhir dibaca ditambahkan' : 'Markah ditambahkan',
-      );
-    } else {
-      Get.back();
-      Snackbar.showSnackbar(
-        'Error',
-        'Markah sudah ada',
-      );
-    }
+    await db.insert('bookmark', {
+      'surah': surah.name?.transliteration?.id,
+      'number_surah': surah.number,
+      'ayat': verse.number?.inSurah,
+      'juz': verse.meta?.juz,
+      'via': 'Surah',
+      'index_ayat': indexAyat,
+      'last_read': lastRead ? 1 : 0,
+    });
+
+    verse.bookmarked = true;
+    update();
+    Snackbar.showSnackbar(
+      'success'.tr,
+      lastRead ? 'last_read_added'.tr : 'bookmark_added'.tr,
+    );
+  }
+
+  Future<bool> isBookmarked(int numberSurah, int numberAyat) async {
+    Database db = await database.db;
+    List<Map<String, dynamic>> data = await db.query(
+      'bookmark',
+      where: 'number_surah = ? AND ayat = ? AND last_read = 0',
+      whereArgs: [numberSurah, numberAyat],
+    );
+    return data.isNotEmpty;
   }
 
   void _handleError(Object e, [StackTrace? st]) {

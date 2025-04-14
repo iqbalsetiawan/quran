@@ -18,7 +18,7 @@ class IntroductionView extends GetView<IntroductionController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Aplikasi Quran & Hadith',
+              'app_title'.tr,
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -28,27 +28,27 @@ class IntroductionView extends GetView<IntroductionController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50),
               child: Text(
-                'Selamat Datang di Aplikasi Quran & Hadith',
+                'welcome_message'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Lottie.asset(
               'assets/lotties/opener.json',
               width: 300,
               height: 300,
               fit: BoxFit.fill,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 Get.offAllNamed(Routes.HOME);
               },
               child: Text(
-                'Mulai',
+                'get_started'.tr,
                 style: TextStyle(
                   color: Get.isDarkMode ? appPurpleDark : appWhite,
                 ),

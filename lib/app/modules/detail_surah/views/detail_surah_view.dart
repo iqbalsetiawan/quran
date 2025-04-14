@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:quran/app/constants/color.dart';
+import 'package:quran/app/controllers/language_controller.dart';
 import 'package:quran/app/data/models/detail_surah.dart' as detail;
 import 'package:quran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
 import 'package:quran/app/modules/quran/controllers/quran_controller.dart';
@@ -10,6 +11,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 // ignore: must_be_immutable
 class DetailSurahView extends GetView<DetailSurahController> {
   final quranController = Get.find<QuranController>();
+  final languageController = Get.find<LanguageController>();
   Map<String, dynamic>? bookmark;
   Widget? bismillahWidget;
 
@@ -27,7 +29,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
             return Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData) {
-            return Center(child: Text('Tidak ada data'));
+            return Center(child: Text('no_data'.tr));
           }
 
           if (Get.arguments['bookmark'] != null) {
@@ -50,13 +52,12 @@ class DetailSurahView extends GetView<DetailSurahController> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Center(
-                  child: Text(
-                    '${surah.preBismillah!.text?.arab}',
-                    style: TextStyle(
-                      fontSize: 30,
-                    ),
+                child: Text(
+                  '${surah.preBismillah!.text?.arab}',
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.05,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             );
@@ -89,8 +90,8 @@ class DetailSurahView extends GetView<DetailSurahController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              height: 40,
-                              width: 40,
+                              height: 45,
+                              width: 45,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: AssetImage(
@@ -111,49 +112,37 @@ class DetailSurahView extends GetView<DetailSurahController> {
                               return Row(
                                 children: [
                                   IconButton(
-                                    icon: Icon(Icons.bookmark_add_outlined),
-                                    onPressed: () {
-                                      Get.defaultDialog(
-                                        title: 'Markah',
-                                        middleText: 'Pilih Tipe Markah',
-                                        actions: [
-                                          ElevatedButton(
-                                            onPressed: () async {
-                                              await c.addBookmark(
-                                                true,
-                                                snapshot.data!,
-                                                ayat,
-                                                index,
-                                              );
-                                              quranController.update();
-                                            },
-                                            child: Text('Terakhir Dibaca'),
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: appPurple,
-                                            ),
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () async {
-                                              await c.addBookmark(
-                                                false,
-                                                snapshot.data!,
-                                                ayat,
-                                                index,
-                                              );
-                                              quranController.update();
-                                            },
-                                            child: Text('Markah'),
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: appPurple,
-                                            ),
-                                          ),
-                                        ],
+                                    icon: Icon(ayat.bookmarked
+                                        ? Icons.bookmark
+                                        : Icons.bookmark_border),
+                                    tooltip: 'add_bookmark'.tr,
+                                    onPressed: () async {
+                                      await c.addBookmark(
+                                        false,
+                                        snapshot.data!,
+                                        ayat,
+                                        index,
                                       );
+                                      quranController.update();
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.access_time),
+                                    tooltip: 'add_last_read'.tr,
+                                    onPressed: () async {
+                                      await c.addBookmark(
+                                        true,
+                                        snapshot.data!,
+                                        ayat,
+                                        index,
+                                      );
+                                      quranController.update();
                                     },
                                   ),
                                   (ayat.audioStatus == 'stop')
                                       ? IconButton(
                                           icon: Icon(Icons.play_arrow),
+                                          tooltip: 'play_audio'.tr,
                                           onPressed: () {
                                             c.playAudio(ayat);
                                           },
@@ -163,6 +152,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                             (ayat.audioStatus == 'play')
                                                 ? IconButton(
                                                     icon: Icon(Icons.pause),
+                                                    tooltip: 'pause_audio'.tr,
                                                     onPressed: () {
                                                       c.pauseAudio(ayat);
                                                     },
@@ -171,12 +161,14 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                     icon: Icon(
                                                       Icons.play_arrow,
                                                     ),
+                                                    tooltip: 'resume_audio'.tr,
                                                     onPressed: () {
                                                       c.resumeAudio(ayat);
                                                     },
                                                   ),
                                             IconButton(
                                               icon: Icon(Icons.stop),
+                                              tooltip: 'stop_audio'.tr,
                                               onPressed: () {
                                                 c.stopAudio(ayat);
                                               },
@@ -207,7 +199,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                     ),
                     SizedBox(height: 25),
                     Text(
-                      '${ayat.translation?.id}',
+                      '${languageController.currentLanguage.value == 'id_ID' ? ayat.translation?.id : ayat.translation?.en}',
                       textAlign: TextAlign.justify,
                       style: TextStyle(fontSize: 18),
                     ),
@@ -305,7 +297,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                   ),
                                 ),
                                 Text(
-                                  '(${surah.name?.translation?.id?.toUpperCase()})',
+                                  '(${languageController.currentLanguage.value == 'id_ID' ? surah.name?.translation?.id?.toUpperCase() : surah.name?.translation?.en?.toUpperCase()})',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -316,7 +308,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                   color: appWhite,
                                 ),
                                 Text(
-                                  ' ${surah.revelation?.id} | ${surah.numberOfVerses} Ayat',
+                                  ' ${languageController.currentLanguage.value == 'id_ID' ? surah.revelation?.id : surah.revelation?.en} | ${surah.numberOfVerses} ${'ayat'.tr}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: appWhite,
