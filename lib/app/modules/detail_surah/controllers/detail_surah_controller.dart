@@ -113,8 +113,39 @@ class DetailSurahController extends GetxController {
 
     if (lastRead) {
       await db.delete('bookmark', where: 'last_read = 1');
-    } else {
-      List duplicate = await db.query('bookmark',
+
+      await db.insert('bookmark', {
+        'surah': surah.name?.transliteration?.id,
+        'number_surah': surah.number,
+        'ayat': verse.number?.inSurah,
+        'juz': verse.meta?.juz,
+        'via': 'Surah',
+        'index_ayat': indexAyat,
+        'last_read': 1,
+      });
+
+      update();
+      Snackbar.showSnackbar(
+        'success'.tr,
+        'last_read_added'.tr,
+      );
+      return;
+    }
+
+    List duplicate = await db.query('bookmark',
+        where:
+            "surah = ? and number_surah = ? and ayat = ? and juz = ? and via = ? and index_ayat = ? and last_read = 0",
+        whereArgs: [
+          surah.name?.transliteration?.id,
+          surah.number,
+          verse.number?.inSurah,
+          verse.meta?.juz,
+          'Surah',
+          indexAyat
+        ]);
+
+    if (duplicate.isNotEmpty) {
+      await db.delete('bookmark',
           where:
               "surah = ? and number_surah = ? and ayat = ? and juz = ? and via = ? and index_ayat = ? and last_read = 0",
           whereArgs: [
@@ -126,27 +157,13 @@ class DetailSurahController extends GetxController {
             indexAyat
           ]);
 
-      if (duplicate.isNotEmpty) {
-        await db.delete('bookmark',
-            where:
-                "surah = ? and number_surah = ? and ayat = ? and juz = ? and via = ? and index_ayat = ? and last_read = 0",
-            whereArgs: [
-              surah.name?.transliteration?.id,
-              surah.number,
-              verse.number?.inSurah,
-              verse.meta?.juz,
-              'Surah',
-              indexAyat
-            ]);
-
-        verse.bookmarked = false;
-        update();
-        Snackbar.showSnackbar(
-          'success'.tr,
-          'bookmark_deleted'.tr,
-        );
-        return;
-      }
+      verse.bookmarked = false;
+      update();
+      Snackbar.showSnackbar(
+        'success'.tr,
+        'bookmark_deleted'.tr,
+      );
+      return;
     }
 
     await db.insert('bookmark', {
@@ -156,14 +173,14 @@ class DetailSurahController extends GetxController {
       'juz': verse.meta?.juz,
       'via': 'Surah',
       'index_ayat': indexAyat,
-      'last_read': lastRead ? 1 : 0,
+      'last_read': 0,
     });
 
     verse.bookmarked = true;
     update();
     Snackbar.showSnackbar(
       'success'.tr,
-      lastRead ? 'last_read_added'.tr : 'bookmark_added'.tr,
+      'bookmark_added'.tr,
     );
   }
 
