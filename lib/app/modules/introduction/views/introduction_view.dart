@@ -18,7 +18,7 @@ class IntroductionView extends GetView<IntroductionController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'app_title'.tr,
+              'Hudaverse',
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -28,7 +28,7 @@ class IntroductionView extends GetView<IntroductionController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50),
               child: Text(
-                'welcome_message'.tr,
+                'Selamat Datang di Hudaverse\nPetunjuk Cahaya Ilahi',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -48,7 +48,7 @@ class IntroductionView extends GetView<IntroductionController> {
                 Get.offAllNamed(Routes.HOME);
               },
               child: Text(
-                'get_started'.tr,
+                'Mulai Perjalanan Anda',
                 style: TextStyle(
                   color: Get.isDarkMode ? appPurpleDark : appWhite,
                 ),

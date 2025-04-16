@@ -21,15 +21,15 @@ class HomeView extends StatelessWidget {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.menu_book_rounded),
-              label: 'quran'.tr,
+              label: 'Al-Qur\’an',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.menu_book_rounded),
-              label: 'hadith'.tr,
+              label: 'Hadis',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
-              label: 'setting'.tr,
+              label: 'Pengaturan',
             ),
           ],
           currentIndex: currentIndex.value,

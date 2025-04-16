@@ -23,12 +23,12 @@ class JuzTabView extends StatelessWidget {
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(
-                  'error_try_again'.tr,
+                  'Terjadi Kesalahan. Silakan Coba Lagi.',
                 ),
               );
             }
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('no_data'.tr));
+              return Center(child: Text('Tidak Ada Data'));
             }
             return ListView.builder(
               itemCount: snapshot.data!.length,
@@ -89,20 +89,20 @@ class JuzTabView extends StatelessWidget {
                   }),
                   isThreeLine: true,
                   title: Text(
-                    '${'juz'.tr} ${index + 1}',
+                    '${'Juz'} ${index + 1}',
                   ),
                   subtitle: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${'start'.tr}: ${detailJuz.juzStartInfo}',
+                        '${'Mulai'}: ${detailJuz.juzStartInfo}',
                         style: TextStyle(
                           color: Colors.grey[500],
                         ),
                       ),
                       Text(
-                        '${'end'.tr}: ${detailJuz.juzEndInfo}',
+                        '${'Selesai'}: ${detailJuz.juzEndInfo}',
                         style: TextStyle(
                           color: Colors.grey[500],
                         ),
