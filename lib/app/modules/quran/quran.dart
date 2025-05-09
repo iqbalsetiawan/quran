@@ -12,7 +12,7 @@ class Quran extends BaseView {
   const Quran({super.key});
 
   @override
-  String get appBarTitle => 'app_title'.tr;
+  String get appBarTitle => 'Hudaverse';
 
   @override
   Widget get body => Padding(
@@ -73,7 +73,7 @@ class Quran extends BaseView {
                                           color: appWhite),
                                       const SizedBox(width: 10),
                                       Text(
-                                        'last_read'.tr,
+                                        'Terakhir Dibaca',
                                         style: TextStyle(
                                           color: appWhite,
                                         ),
@@ -82,7 +82,7 @@ class Quran extends BaseView {
                                   ),
                                   const SizedBox(height: 30),
                                   Text(
-                                    'loading'.tr,
+                                    'Sedang Memuat...',
                                     style: TextStyle(
                                       color: appWhite,
                                       fontSize: 20,
@@ -133,19 +133,20 @@ class Quran extends BaseView {
                           onLongPress: () {
                             if (lastRead != null) {
                               Get.defaultDialog(
-                                title: 'delete_last_read'.tr,
-                                middleText: 'confirm_delete_last_read'.tr,
+                                title: 'Hapus Bacaan Terakhir',
+                                middleText:
+                                    'Apakah Anda yakin ingin menghapus bacaan terakhir ini?',
                                 actions: [
                                   OutlinedButton(
                                     onPressed: () => Get.back(),
-                                    child: Text('cancel'.tr),
+                                    child: Text('Batal'),
                                   ),
                                   ElevatedButton(
                                     onPressed: () => c.deleteBookmark(
                                       lastRead['id'],
                                       true,
                                     ),
-                                    child: Text('delete'.tr),
+                                    child: Text('Hapus'),
                                   ),
                                 ],
                               );
@@ -182,7 +183,7 @@ class Quran extends BaseView {
                                               color: appWhite),
                                           const SizedBox(width: 10),
                                           Text(
-                                            'last_read'.tr,
+                                            'Terakhir Dibaca',
                                             style: TextStyle(
                                               color: appWhite,
                                             ),
@@ -192,7 +193,7 @@ class Quran extends BaseView {
                                       const SizedBox(height: 30),
                                       Text(
                                         lastRead == null
-                                            ? 'no_last_read'.tr
+                                            ? 'Belum Ada Bacaan Terakhir'
                                             : "${lastRead['surah']}",
                                         style: TextStyle(
                                           color: appWhite,
@@ -202,7 +203,7 @@ class Quran extends BaseView {
                                       Text(
                                         lastRead == null
                                             ? ''
-                                            : '${'juz'.tr}: ${lastRead['juz']} | ${'ayat'.tr}: ${lastRead['ayat']}',
+                                            : '${'Juz'}: ${lastRead['juz']} | Ayat: ${lastRead['ayat']}',
                                         style: TextStyle(
                                           color: appWhite,
                                         ),
@@ -221,9 +222,9 @@ class Quran extends BaseView {
               }),
               TabBar(
                 tabs: [
-                  Tab(text: 'surah'.tr),
-                  Tab(text: 'juz'.tr),
-                  Tab(text: 'bookmark'.tr),
+                  Tab(text: 'Surat'),
+                  Tab(text: 'Juz'),
+                  Tab(text: 'Markah'),
                 ],
               ),
               Expanded(

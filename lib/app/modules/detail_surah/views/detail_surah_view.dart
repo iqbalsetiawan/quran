@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:quran/app/constants/color.dart';
-import 'package:quran/app/controllers/language_controller.dart';
 import 'package:quran/app/data/models/detail_surah.dart' as detail;
 import 'package:quran/app/modules/detail_surah/controllers/detail_surah_controller.dart';
 import 'package:quran/app/modules/quran/controllers/quran_controller.dart';
@@ -11,7 +10,6 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 // ignore: must_be_immutable
 class DetailSurahView extends GetView<DetailSurahController> {
   final quranController = Get.find<QuranController>();
-  final languageController = Get.find<LanguageController>();
   Map<String, dynamic>? bookmark;
   Widget? bismillahWidget;
 
@@ -29,7 +27,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
             return Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData) {
-            return Center(child: Text('no_data'.tr));
+            return Center(child: Text('Tidak Ada Data'));
           }
 
           if (Get.arguments['bookmark'] != null) {
@@ -115,7 +113,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                     icon: Icon(ayat.bookmarked
                                         ? Icons.bookmark
                                         : Icons.bookmark_border),
-                                    tooltip: 'add_bookmark'.tr,
+                                    tooltip: 'Tambah Markah',
                                     onPressed: () async {
                                       await c.addBookmark(
                                         false,
@@ -128,7 +126,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.access_time),
-                                    tooltip: 'add_last_read'.tr,
+                                    tooltip: 'Tandai sebagai Terakhir Dibaca',
                                     onPressed: () async {
                                       await c.addBookmark(
                                         true,
@@ -142,7 +140,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                   (ayat.audioStatus == 'stop')
                                       ? IconButton(
                                           icon: Icon(Icons.play_arrow),
-                                          tooltip: 'play_audio'.tr,
+                                          tooltip: 'Putar Bacaan',
                                           onPressed: () {
                                             c.playAudio(ayat);
                                           },
@@ -152,7 +150,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                             (ayat.audioStatus == 'play')
                                                 ? IconButton(
                                                     icon: Icon(Icons.pause),
-                                                    tooltip: 'pause_audio'.tr,
+                                                    tooltip: 'Jeda Bacaan',
                                                     onPressed: () {
                                                       c.pauseAudio(ayat);
                                                     },
@@ -161,14 +159,14 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                     icon: Icon(
                                                       Icons.play_arrow,
                                                     ),
-                                                    tooltip: 'resume_audio'.tr,
+                                                    tooltip: 'Lanjutkan Bacaan',
                                                     onPressed: () {
                                                       c.resumeAudio(ayat);
                                                     },
                                                   ),
                                             IconButton(
                                               icon: Icon(Icons.stop),
-                                              tooltip: 'stop_audio'.tr,
+                                              tooltip: 'Hentikan Bacaan',
                                               onPressed: () {
                                                 c.stopAudio(ayat);
                                               },
@@ -199,7 +197,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                     ),
                     SizedBox(height: 25),
                     Text(
-                      '${languageController.currentLanguage.value == 'id_ID' ? ayat.translation?.id : ayat.translation?.en}',
+                      '${ayat.translation?.id}',
                       textAlign: TextAlign.justify,
                       style: TextStyle(fontSize: 18),
                     ),
@@ -297,7 +295,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                   ),
                                 ),
                                 Text(
-                                  '(${languageController.currentLanguage.value == 'id_ID' ? surah.name?.translation?.id?.toUpperCase() : surah.name?.translation?.en?.toUpperCase()})',
+                                  '(${surah.name?.translation?.id?.toUpperCase()})',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -308,7 +306,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                   color: appWhite,
                                 ),
                                 Text(
-                                  ' ${languageController.currentLanguage.value == 'id_ID' ? surah.revelation?.id : surah.revelation?.en} | ${surah.numberOfVerses} ${'ayat'.tr}',
+                                  ' ${surah.revelation?.id} | ${surah.numberOfVerses} Ayat',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: appWhite,

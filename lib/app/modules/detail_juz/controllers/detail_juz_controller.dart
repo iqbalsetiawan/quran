@@ -117,14 +117,14 @@ class DetailJuzController extends GetxController {
       });
       Get.back();
       Snackbar.showSnackbar(
-        'success'.tr,
-        lastRead ? 'last_read_added'.tr : 'bookmark_added'.tr,
+        'Berhasil',
+        lastRead ? 'Bacaan Terakhir Disimpan' : 'Markah Disimpan',
       );
     } else {
       Get.back();
       Snackbar.showSnackbar(
         'Error',
-        'bookmark_exists'.tr,
+        'Markah Ini Sudah Ada',
       );
     }
   }

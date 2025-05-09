@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quran/app/controllers/language_controller.dart';
 import 'package:quran/app/routes/app_pages.dart';
 import 'package:quran/app/data/models/surah.dart';
 import 'package:quran/app/modules/quran/controllers/quran_controller.dart';
@@ -8,7 +7,6 @@ import 'package:quran/app/modules/home/controllers/home_controller.dart';
 
 class SurahTabView extends StatelessWidget {
   final HomeController controller = Get.find<HomeController>();
-  final LanguageController languageController = Get.find<LanguageController>();
 
   SurahTabView({super.key});
 
@@ -24,12 +22,12 @@ class SurahTabView extends StatelessWidget {
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(
-                  'error_try_again'.tr,
+                  'Terjadi Kesalahan. Silakan Coba Lagi.',
                 ),
               );
             }
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('no_data'.tr));
+              return Center(child: Text('Tidak Ada Data'));
             }
             return ListView.builder(
               itemCount: snapshot.data!.length,
@@ -40,12 +38,12 @@ class SurahTabView extends StatelessWidget {
                   title: Text(
                     '${surah.name?.transliteration?.id}',
                   ),
-                  subtitle: Obx(() => Text(
-                        '${languageController.currentLanguage.value == 'id_ID' ? surah.revelation?.id : surah.revelation?.en} | ${surah.numberOfVerses} ${'ayat'.tr}',
-                        style: TextStyle(
-                          color: Colors.grey[500],
-                        ),
-                      )),
+                  subtitle: Text(
+                    '${surah.revelation?.id} | ${surah.numberOfVerses} ${'Ayat'}',
+                    style: TextStyle(
+                      color: Colors.grey[500],
+                    ),
+                  ),
                   leading: Obx(() {
                     return Container(
                       width: 45,

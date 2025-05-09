@@ -60,6 +60,7 @@ class DetailSurahController extends GetxController {
       lastVerse = verse;
       update();
       await player.stop();
+      print(verse.audio!.primary);
       await player.setUrl(verse.audio?.primary ??
           verse.audio?.secondary?[0] ??
           verse.audio?.secondary?[1] ??
@@ -126,8 +127,8 @@ class DetailSurahController extends GetxController {
 
       update();
       Snackbar.showSnackbar(
-        'success'.tr,
-        'last_read_added'.tr,
+        'Berhasil',
+        'Bacaan Terakhir Disimpan',
       );
       return;
     }
@@ -160,8 +161,8 @@ class DetailSurahController extends GetxController {
       verse.bookmarked = false;
       update();
       Snackbar.showSnackbar(
-        'success'.tr,
-        'bookmark_deleted'.tr,
+        'Berhasil',
+        'Markah Berhasil Dihapus',
       );
       return;
     }
@@ -179,8 +180,8 @@ class DetailSurahController extends GetxController {
     verse.bookmarked = true;
     update();
     Snackbar.showSnackbar(
-      'success'.tr,
-      'bookmark_added'.tr,
+      'Berhasil',
+      'Markah Disimpan',
     );
   }
 
